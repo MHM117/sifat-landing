@@ -1,0 +1,189 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Sifat Design System - Blue theme */
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 217 30% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 217 30% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 217 30% 10%;
+
+    /* Blue primary - #60A5FA */
+    --primary: 217 92% 68%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Darker blue secondary - #3B82F6 */
+    --secondary: 217 91% 60%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 217 20% 96%;
+    --muted-foreground: 217 10% 45%;
+
+    --accent: 217 30% 94%;
+    --accent-foreground: 217 30% 15%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 217 20% 90%;
+    --input: 217 20% 90%;
+    --ring: 217 91% 60%;
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 217 30% 20%;
+    --sidebar-primary: 217 91% 60%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 217 20% 96%;
+    --sidebar-accent-foreground: 217 30% 15%;
+    --sidebar-border: 217 20% 90%;
+    --sidebar-ring: 217 91% 60%;
+  }
+
+  .dark {
+    --background: 200 30% 8%;
+    --foreground: 160 20% 95%;
+
+    --card: 200 25% 12%;
+    --card-foreground: 160 20% 95%;
+
+    --popover: 200 25% 12%;
+    --popover-foreground: 160 20% 95%;
+
+    /* Blue primary for dark mode - #3B82F6 */
+    --primary: 217 91% 60%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Teal secondary */
+    --secondary: 175 82% 32%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 200 25% 15%;
+    --muted-foreground: 200 15% 60%;
+
+    --accent: 200 25% 18%;
+    --accent-foreground: 160 20% 95%;
+
+    --destructive: 0 62% 30%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 200 25% 18%;
+    --input: 200 25% 18%;
+    --ring: 217 91% 60%;
+
+    --sidebar-background: 200 30% 10%;
+    --sidebar-foreground: 160 20% 90%;
+    --sidebar-primary: 217 91% 60%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 200 25% 15%;
+    --sidebar-accent-foreground: 160 20% 90%;
+    --sidebar-border: 200 25% 18%;
+    --sidebar-ring: 217 91% 60%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer utilities {
+  .animate-fade-up {
+    animation: fade-up 0.6s ease-out forwards;
+  }
+
+  .animate-fade-up-delay-1 {
+    animation: fade-up 0.6s ease-out 0.1s forwards;
+    opacity: 0;
+  }
+
+  .animate-fade-up-delay-2 {
+    animation: fade-up 0.6s ease-out 0.2s forwards;
+    opacity: 0;
+  }
+
+  .animate-fade-up-delay-3 {
+    animation: fade-up 0.6s ease-out 0.3s forwards;
+    opacity: 0;
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .animate-float-fade-in {
+    opacity: 0;
+    animation: fade-up 0.6s ease-out 0.4s forwards, float 6s ease-in-out 1s infinite;
+  }
+
+  .animate-pulse-subtle {
+    animation: pulse-subtle 3s ease-in-out infinite;
+  }
+
+  /* 3D Flip Card Utilities */
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+
+  .transform-style-preserve-3d {
+    transform-style: preserve-3d;
+  }
+
+  .backface-hidden {
+    backface-visibility: hidden;
+  }
+
+  .rotate-y-180 {
+    transform: rotateY(180deg);
+  }
+
+  .-rotate-y-180 {
+    transform: rotateY(-180deg);
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes pulse-subtle {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
