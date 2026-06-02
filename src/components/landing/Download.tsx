@@ -26,10 +26,10 @@ const Download = () => {
                 className="h-full w-full object-contain" 
               />
             </a>
-            <div className="inline-flex items-center gap-2 bg-primary-foreground/10 backdrop-blur-sm text-primary-foreground px-5 py-2.5 rounded-full">
+            {/* <div className="inline-flex items-center gap-2 bg-primary-foreground/10 backdrop-blur-sm text-primary-foreground px-5 py-2.5 rounded-full">
               <Bell className="w-4 h-4" />
               <span className="text-sm font-medium">Coming Soon to Android</span>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
