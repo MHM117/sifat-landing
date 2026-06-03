@@ -5,7 +5,7 @@ const steps = [
     number: 1,
     icon: Download,
     title: "Download",
-    description: "Get the app on iOS and Android",
+    description: "Get the app",
   },
   {
     number: 2,

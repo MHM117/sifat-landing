@@ -32,8 +32,8 @@ const Features = () => {
     },
     {
       icon: HandHeart,
-      title: "Dua Helper",
-      description: "Learn how to call upon Allah using His Names in your daily supplications. Detailed reflection guides for each Name are also planned.",
+      title: "Dua Journal",
+      description: "A guide on calling upon Allah using His Names and a place for you to write all of your dua grouped by category.",
     },
     {
       icon: Ban,

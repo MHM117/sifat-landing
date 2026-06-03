@@ -15,11 +15,11 @@ const Pricing = () => {
           <p className="text-muted-foreground max-w-2xl mx-auto">
             Invest in your spiritual growth. Knowledge that benefits you in this life and the next.
           </p>
-          <div className="mt-3">
+          {/* <div className="mt-3">
             <span className="inline-block px-4 py-1.5 bg-destructive/10 text-destructive rounded-full text-sm font-bold">
               🚀 Launch Discount
             </span>
-          </div>
+          </div> */}
         </div>
 
         <div className="max-w-xl mx-auto">

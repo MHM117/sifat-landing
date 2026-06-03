@@ -1,0 +1,101 @@
+<h2>Pricing Section Detail</h2>
+<p class="subtitle">How should the Free vs Premium tiers and comparison table be presented?</p>
+
+<div class="cards">
+  <div class="card" data-choice="a" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div style="padding: 20px; font-family: system-ui; font-size: 13px; line-height: 1.6; background: #0f1729; color: #ccc; border-radius: 8px;">
+        <div style="text-align:center; margin-bottom: 16px;">
+          <span style="background: rgba(96,165,250,0.15); color: #60A5FA; padding: 4px 12px; border-radius: 99px; font-size: 11px;">Pricing</span>
+          <div style="font-size: 18px; font-weight: bold; color: #fff; margin-top: 8px;">Simple, Fair Pricing</div>
+          <div style="font-size: 12px; color: #888; margin-top: 4px;">Invest in your spiritual growth</div>
+        </div>
+
+        <!-- Two side-by-side cards -->
+        <div style="display: flex; gap: 10px; margin-bottom: 16px;">
+          <div style="flex:1; background: #1a2236; border: 1px solid #2a3a5c; border-radius: 12px; padding: 14px; text-align: center;">
+            <div style="font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 1px;">Free</div>
+            <div style="font-size: 24px; font-weight: bold; color: #fff; margin: 6px 0;">£0</div>
+            <div style="font-size: 10px; color: #888;">Try before you buy</div>
+            <div style="margin-top: 10px; font-size: 10px; color: #aaa; text-align: left;">
+              <div style="padding: 3px 0;">&#10003; 18 Flashcards</div>
+              <div style="padding: 3px 0;">&#10003; 3 Daily Quiz Tokens</div>
+              <div style="padding: 3px 0;">&#10003; Dua Guide & Journal</div>
+              <div style="padding: 3px 0;">&#10003; Audio</div>
+            </div>
+          </div>
+          <div style="flex:1; background: #1a2236; border: 2px solid #60A5FA; border-radius: 12px; padding: 14px; text-align: center; position: relative;">
+            <div style="position: absolute; top: -8px; left: 50%; transform: translateX(-50%); background: #60A5FA; color: #fff; padding: 2px 10px; border-radius: 99px; font-size: 9px; font-weight: 600;">BEST VALUE</div>
+            <div style="font-size: 11px; color: #60A5FA; text-transform: uppercase; letter-spacing: 1px;">Premium</div>
+            <div style="font-size: 24px; font-weight: bold; color: #fff; margin: 6px 0;">£7.99</div>
+            <div style="font-size: 10px; color: #888;">Pay once, own forever</div>
+            <div style="margin-top: 10px; font-size: 10px; color: #aaa; text-align: left;">
+              <div style="padding: 3px 0;">&#10003; All 99 Flashcards</div>
+              <div style="padding: 3px 0;">&#10003; Unlimited Quizzes</div>
+              <div style="padding: 3px 0;">&#10003; Custom Study</div>
+              <div style="padding: 3px 0;">&#10003; Challenges</div>
+              <div style="padding: 3px 0; color: #60A5FA;">+ Everything in Free</div>
+            </div>
+          </div>
+        </div>
+        <div style="background: #60A5FA; text-align:center; padding: 10px; border-radius: 8px; color: #fff; font-weight: 600; font-size: 13px;">Get Started</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A: Side-by-Side Cards (Recommended)</h3>
+      <p>Two tier cards with feature lists built in. No separate table needed — the cards ARE the comparison. Clean and familiar pricing page pattern.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="b" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div style="padding: 20px; font-family: system-ui; font-size: 13px; line-height: 1.6; background: #0f1729; color: #ccc; border-radius: 8px;">
+        <div style="text-align:center; margin-bottom: 16px;">
+          <span style="background: rgba(96,165,250,0.15); color: #60A5FA; padding: 4px 12px; border-radius: 99px; font-size: 11px;">Pricing</span>
+          <div style="font-size: 18px; font-weight: bold; color: #fff; margin-top: 8px;">Simple, Fair Pricing</div>
+          <div style="font-size: 12px; color: #888; margin-top: 4px;">Invest in your spiritual growth</div>
+        </div>
+
+        <!-- Single pricing hero -->
+        <div style="background: #1a2236; border: 2px solid #60A5FA; border-radius: 12px; padding: 16px; text-align: center; margin-bottom: 16px;">
+          <div style="display: flex; justify-content: center; align-items: baseline; gap: 4px;">
+            <span style="font-size: 28px; font-weight: bold; color: #fff;">£7.99</span>
+            <span style="font-size: 11px; color: #888;">one-time</span>
+          </div>
+          <div style="font-size: 11px; color: #60A5FA; margin-top: 4px;">Pay once, own forever</div>
+          <div style="font-size: 10px; color: #888; margin-top: 2px;">Free version available with limited features</div>
+        </div>
+
+        <!-- Comparison table -->
+        <div style="background: #1a2236; border: 1px solid #2a3a5c; border-radius: 10px; overflow: hidden; margin-bottom: 16px;">
+          <div style="display: grid; grid-template-columns: 1fr 60px 60px; font-size: 10px; border-bottom: 1px solid #2a3a5c; padding: 6px 10px; color: #60A5FA; font-weight: 600;">
+            <div>Feature</div><div style="text-align:center;">Free</div><div style="text-align:center;">Pro</div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 60px 60px; font-size: 10px; border-bottom: 1px solid #1e2d4a; padding: 5px 10px; color: #aaa;">
+            <div>Flashcards</div><div style="text-align:center;">18</div><div style="text-align:center; color: #4ade80;">All 99</div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 60px 60px; font-size: 10px; border-bottom: 1px solid #1e2d4a; padding: 5px 10px; color: #aaa;">
+            <div>Daily Quizzes</div><div style="text-align:center;">3</div><div style="text-align:center; color: #4ade80;">&#8734;</div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 60px 60px; font-size: 10px; border-bottom: 1px solid #1e2d4a; padding: 5px 10px; color: #aaa;">
+            <div>Custom Study</div><div style="text-align:center; color: #f87171;">&#10007;</div><div style="text-align:center; color: #4ade80;">&#10003;</div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 60px 60px; font-size: 10px; border-bottom: 1px solid #1e2d4a; padding: 5px 10px; color: #aaa;">
+            <div>Challenges</div><div style="text-align:center; color: #f87171;">&#10007;</div><div style="text-align:center; color: #4ade80;">&#10003;</div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 60px 60px; font-size: 10px; border-bottom: 1px solid #1e2d4a; padding: 5px 10px; color: #aaa;">
+            <div>Dua Journal</div><div style="text-align:center; color: #4ade80;">&#10003;</div><div style="text-align:center; color: #4ade80;">&#10003;</div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 60px 60px; font-size: 10px; padding: 5px 10px; color: #aaa;">
+            <div>Audio</div><div style="text-align:center; color: #4ade80;">&#10003;</div><div style="text-align:center; color: #4ade80;">&#10003;</div>
+          </div>
+        </div>
+        <div style="background: #60A5FA; text-align:center; padding: 10px; border-radius: 8px; color: #fff; font-weight: 600; font-size: 13px;">Get Started</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B: Price Hero + Table Below</h3>
+      <p>Single prominent price card up top, then a proper feature comparison grid below with checkmarks, crosses, and values. More data-driven — lets users scan row by row.</p>
+    </div>
+  </div>
+</div>
