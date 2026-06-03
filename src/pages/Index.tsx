@@ -7,6 +7,7 @@ import HowItWorks from "@/components/landing/HowItWorks";
 import StepsToValue from "@/components/landing/StepsToValue";
 import Features from "@/components/landing/Features";
 import Pricing from "@/components/landing/Pricing";
+import FairPricing from "@/components/landing/FairPricing";
 import FAQ from "@/components/landing/FAQ";
 import SpecialThanks from "@/components/landing/SpecialThanks";
 import Download from "@/components/landing/Download";
@@ -33,6 +34,7 @@ const Index = () => {
       <StepsToValue />
       <Features />
       <Pricing />
+      <FairPricing />
       <FAQ />
       <SpecialThanks />
       <Download />
