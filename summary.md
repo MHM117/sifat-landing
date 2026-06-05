@@ -1,22 +1,26 @@
 # Session Summary
 
-## 2026-06-03
+## Current state
+- A live version has been pushed to origin recently (pre-session).
+
+## 2026-06-05
 
 ### What we did
-- Switched pricing model from subscription (monthly/yearly) to one-time purchase (£7.99) with a free tier
-- Rewrote `Pricing.tsx`: OTP hero card, Free vs Premium comparison table (Flashcards, Quizzes, Custom Study, Challenges, Names Explorer, Dua Journal, Audio), Get Started CTA
-- Created new `FairPricing.tsx` section ("Fair Pricing & No Tricks"): hero card comparing to physical books (up to £30), two cards ("Built to be Completed" + "No subscriptions"), future decks footnote
-- Added FairPricing to page composition in `Index.tsx` between Pricing and FAQ
-- Small content tweaks: Step 1 description to "Get the app", renamed "Dua Helper" to "Dua Journal" with new copy, commented out launch discount badge
-- Used visual brainstorming companion (localhost server) to iterate on mockups before coding
+- Revised FAQs to align with the one-time purchase pricing model
+  - "Is there a free trial?" changed to "Is there a free version?" with updated answer reflecting OTP and free tier
+  - Removed "across iOS and Android" from the multi-device sync FAQ
+  - Replaced subscription cancellation FAQ with a restore purchase FAQ (commented out for now)
+  - Commented out the family plan FAQ
+- Updated Privacy Policy (June 2026)
+  - All subscription references changed to one-time purchase
+  - RevenueCat described as "Purchase management" instead of "Subscription management"
+  - Added "User-Generated Content" subsection for Dua Journal entries (encrypted, user-only access)
+  - Added Dua Journal encryption note to Data Security section
+- Updated Terms of Service (June 2026)
+  - "Subscriptions" section rewritten as "Purchases" reflecting free tier + one-time purchase model
 
-### Design decisions
-- Split layout chosen: Pricing section (card + table) separate from justification section (Fair Pricing & No Tricks)
-- Price hero + table layout chosen over side-by-side tier cards
-- No em dashes in any copy
-- "Names Explorer" chosen as the name for the list mode feature
+### No issues encountered
+- Straightforward content updates, no design or code struggles.
 
 ### Next up
-- Revise FAQs to reflect new pricing model and features
-- Update privacy policy and terms pages
 - Further design revamps across the landing page
