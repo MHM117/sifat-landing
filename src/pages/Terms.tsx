@@ -19,7 +19,7 @@ const Terms = () => {
 
         <div className="prose prose-gray max-w-none">
           <p className="text-muted-foreground mb-6">
-            Last updated: March 2026
+            Last updated: June 2026
           </p>
 
           <section className="mb-8">
@@ -37,12 +37,12 @@ const Terms = () => {
           </section>
 
           <section className="mb-8">
-            <h2 className="text-xl font-semibold text-foreground mb-4">Subscriptions</h2>
+            <h2 className="text-xl font-semibold text-foreground mb-4">Purchases</h2>
             <p className="text-muted-foreground mb-4">
-              Sifat requires a paid subscription. Subscription fees are billed in advance on a monthly or yearly basis depending on the plan you choose.
+              Sifat offers a free tier with limited access. Full access to all features requires a one-time purchase through the App Store.
             </p>
             <p className="text-muted-foreground">
-              You may cancel your subscription at any time through the App Store or Google Play Store. Cancellation will take effect at the end of your current billing period.
+              All purchases are final and handled by the platform provider. Refund requests are subject to the App Store's refund policy.
             </p>
           </section>
 

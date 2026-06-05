@@ -12,8 +12,8 @@ const FAQ = () => {
       answer: "Sifat (صفات) is the Arabic word for 'attributes' or 'characteristics.' The app is named after this concept, as it focuses on the Qualities of Allah that help us understand and connect with our Creator.\n\nSifat helps Muslims master the meanings of Allah's Names using spaced repetition and reflective study, so they can meaningfully incorporate them into their daily prayers and dua.",
     },
     {
-      question: "Is there a free trial?",
-      answer: "We offer a limited free tier so you can explore the app before subscribing. The full experience, including all Names and features, requires a subscription.",
+      question: "Is there a free version?",
+      answer: "We offer a limited free tier so you can explore the app. Full access to all flashcards requires a one time purchase. Dua Guide and Journal features are available in both Free and Premium versions.",
     },
     {
       question: "Why learn 128 names instead of 99?",
@@ -33,16 +33,16 @@ const FAQ = () => {
     },
     {
       question: "Can I use Sifat on multiple devices?",
-      answer: "Yes, Sifat supports multi-device sync across iOS and Android. Your progress automatically syncs when you're connected to the internet.\n\nHowever, for the best experience, we recommend using one device at a time. If you use the app offline on multiple devices simultaneously, there is a chance your progress might not sync correctly when you reconnect.\n\nCloud sync is optimised to help you seamlessly switch between devices - for example, upgrading to a new phone - rather than actively using multiple devices at once.",
+      answer: "Yes, Sifat supports multi-device sync. Your progress automatically syncs when you're connected to the internet.\n\nHowever, for the best experience, we recommend using one device at a time. If you use the app offline on multiple devices simultaneously, there is a chance your progress might not sync correctly when you reconnect.\n\nCloud sync is optimised to help you seamlessly switch between devices - for example, upgrading to a new phone - rather than actively using multiple devices at once.",
     },
-    {
-      question: "How do I cancel my subscription?",
-      answer: "You can cancel your subscription anytime through the App Store or Google Play Store. Your access continues until the end of your billing period.",
-    },
-    {
-      question: "Will there be a family plan?",
-      answer: "Yes! There is a plan to implement a family plan in the future which will enable access for multiple users via one subscription.",
-    },
+    // {
+    //   question: "How do I restore my purchase?",
+    //   answer: "If you've reinstalled the app or switched to a new device, you can restore your purchase from the app's settings. Just make sure you're signed in with the same Apple ID you used for the original purchase.",
+    // },
+    // {
+    //   question: "Will there be a family plan?",
+    //   answer: "Yes! There is a plan to implement a family plan in the future which will enable access for multiple users via one subscription.",
+    // },
   ];
 
   return (

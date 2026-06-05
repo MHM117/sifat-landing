@@ -19,7 +19,7 @@ const Privacy = () => {
 
         <div className="prose prose-gray max-w-none">
           <p className="text-muted-foreground mb-6">
-            Last updated: March 2026
+            Last updated: June 2026
           </p>
 
           <section className="mb-8">
@@ -52,6 +52,11 @@ const Privacy = () => {
               <li>Analytics data (app opens, feature usage, session duration)</li>
             </ul>
 
+            <h3 className="text-lg font-medium text-foreground mb-2">User-Generated Content:</h3>
+            <ul className="list-disc pl-6 text-muted-foreground space-y-2 mb-4">
+              <li>Dua Journal entries (personal reflections and notes you choose to save). These entries are encrypted and stored securely. Only you can view your journal content.</li>
+            </ul>
+
             <h3 className="text-lg font-medium text-foreground mb-2">Technical Data:</h3>
             <ul className="list-disc pl-6 text-muted-foreground space-y-2">
               <li>Device identifiers</li>
@@ -66,7 +71,7 @@ const Privacy = () => {
             <ul className="list-disc pl-6 text-muted-foreground space-y-2 mb-4">
               <li>Create and maintain your account (GDPR Art. 6b - contract fulfillment)</li>
               <li>Sync your learning progress across devices (GDPR Art. 6b - contract fulfillment)</li>
-              <li>Process your subscription and manage payments (GDPR Art. 6b - contract fulfillment)</li>
+              <li>Process your one-time purchase and manage payments (GDPR Art. 6b - contract fulfillment)</li>
               <li>Personalize your learning experience (GDPR Art. 6f - legitimate interest)</li>
               <li>Analyze and improve app performance (GDPR Art. 6f - legitimate interest)</li>
               <li>Send push notifications about your learning progress (GDPR Art. 6a - consent)</li>
@@ -86,7 +91,7 @@ const Privacy = () => {
             <ul className="list-disc pl-6 text-muted-foreground space-y-2 mb-4">
               <li><strong>Supabase:</strong> Data storage and authentication</li>
               <li><strong>Firebase:</strong> Analytics and crash reporting</li>
-              <li><strong>RevenueCat:</strong> Subscription management</li>
+              <li><strong>RevenueCat:</strong> Purchase management</li>
               <li><strong>OneSignal:</strong> Push notifications</li>
             </ul>
             <p className="text-muted-foreground">
@@ -117,7 +122,7 @@ const Privacy = () => {
           <section className="mb-8">
             <h2 className="text-xl font-semibold text-foreground mb-4">6. Data Security</h2>
             <p className="text-muted-foreground">
-              We implement security measures including encryption, firewalls, and secure authentication to protect your information from unauthorized access, alteration, or destruction. However, no method of transmission over the internet is 100% secure, and we cannot guarantee absolute security.
+              We implement security measures including encryption, firewalls, and secure authentication to protect your information from unauthorized access, alteration, or destruction. Dua Journal entries are encrypted so that only you can access their content. However, no method of transmission over the internet is 100% secure, and we cannot guarantee absolute security.
             </p>
           </section>
 
@@ -161,7 +166,7 @@ const Privacy = () => {
           <section className="mb-8">
             <h2 className="text-xl font-semibold text-foreground mb-4">10. Communications</h2>
             <p className="text-muted-foreground">
-              You may opt out of promotional notifications through your device settings or in-app notification preferences. We may still send you administrative messages regarding your account or subscription.
+              You may opt out of promotional notifications through your device settings or in-app notification preferences. We may still send you administrative messages regarding your account or purchase.
             </p>
           </section>
 
