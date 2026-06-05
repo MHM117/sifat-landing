@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { GraduationCap, Calendar, RotateCcw, TrendingUp } from "lucide-react";
 import { Area, AreaChart, XAxis, YAxis, ResponsiveContainer } from "recharts";
+import { useScrollReveal } from "@/hooks/use-scroll-reveal";
 
 // Retention data showing spaced repetition effect - Day 0, 1, 7, 30
 const retentionData = [
@@ -15,9 +16,10 @@ const retentionData = [
 
 const HowItWorks = () => {
   const [isFlipped, setIsFlipped] = useState(false);
+  const sectionRef = useScrollReveal<HTMLElement>();
 
   return (
-    <section className="py-24 bg-muted/30">
+    <section ref={sectionRef} className="reveal-fade-up py-24 bg-muted/30">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
@@ -30,7 +32,7 @@ const HowItWorks = () => {
 
         <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
           {/* Active Recall Card */}
-          <div className="bg-card rounded-2xl border border-border p-8 hover:border-primary/50 transition-colors">
+          <div className="reveal-fade-up reveal-stagger-1 bg-card rounded-2xl p-8 card-shadow card-lift">
             <div className="flex items-center gap-3 mb-6">
               <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
                 <GraduationCap className="w-6 h-6 text-primary" />
@@ -70,7 +72,7 @@ const HowItWorks = () => {
           </div>
 
           {/* Spaced Repetition Card */}
-          <div className="bg-card rounded-2xl border border-border p-8 hover:border-primary/50 transition-colors">
+          <div className="reveal-fade-up reveal-stagger-2 bg-card rounded-2xl p-8 card-shadow card-lift">
             <div className="flex items-center gap-3 mb-6">
               <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
                 <Calendar className="w-6 h-6 text-primary" />

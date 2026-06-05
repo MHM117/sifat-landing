@@ -54,7 +54,7 @@ const Header = () => {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <nav className="md:hidden py-4 border-t border-border animate-fade-up">
+          <nav className="md:hidden py-4 border-t border-border mobile-nav-enter">
             <div className="flex flex-col gap-4">
               {navLinks.map((link) => (
                 <a

@@ -76,9 +76,12 @@ const Hero = () => {
                   key={i}
                   src={src}
                   alt={["Home screen", "Flashcard screen", "List screen"][i]}
-                  className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-700 ${
-                    i === active ? "opacity-100" : "opacity-0"
+                  className={`absolute inset-0 w-full h-full object-contain transition-all duration-700 ${
+                    i === active
+                      ? "opacity-100 translate-y-0 blur-0 scale-100"
+                      : "opacity-0 translate-y-2 blur-[2px] scale-[0.98]"
                   }`}
+                  style={{ transitionTimingFunction: "var(--ease-out-expo)" }}
                 />
               ))}
             </div>

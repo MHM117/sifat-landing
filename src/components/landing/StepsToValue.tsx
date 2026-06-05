@@ -1,4 +1,5 @@
 import { Download, BookMarked, Layers, Trophy } from "lucide-react";
+import { useScrollReveal } from "@/hooks/use-scroll-reveal";
 
 const steps = [
   {
@@ -28,8 +29,10 @@ const steps = [
 ];
 
 const StepsToValue = () => {
+  const sectionRef = useScrollReveal<HTMLElement>();
+
   return (
-    <section className="py-24 bg-background">
+    <section ref={sectionRef} className="reveal-fade-up py-24 bg-background">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <span className="inline-block px-4 py-1.5 bg-primary/10 text-primary rounded-full text-sm font-medium mb-4">
@@ -44,7 +47,7 @@ const StepsToValue = () => {
         <div className="relative max-w-4xl mx-auto">
           {/* Connecting line - horizontal on desktop */}
           <div className="absolute hidden lg:block top-6 left-[calc(12.5%)] right-[calc(12.5%)] h-0.5 bg-primary/20" />
-          
+
           {/* Connecting line - vertical on mobile */}
           <div className="absolute lg:hidden left-6 top-6 bottom-6 w-0.5 bg-primary/20" />
 
@@ -53,7 +56,7 @@ const StepsToValue = () => {
             {steps.map((step, index) => (
               <div
                 key={step.number}
-                className="flex lg:flex-col items-start lg:items-center gap-4 lg:gap-3 lg:flex-1"
+                className={`reveal-fade-up reveal-stagger-${index + 1} flex lg:flex-col items-start lg:items-center gap-4 lg:gap-3 lg:flex-1`}
               >
                 {/* Circle with icon */}
                 <div className="relative z-10 w-12 h-12 rounded-full bg-primary shadow-lg flex items-center justify-center shrink-0 hover:scale-110 transition-transform">

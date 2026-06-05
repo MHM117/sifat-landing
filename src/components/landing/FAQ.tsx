@@ -4,6 +4,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { useScrollReveal } from "@/hooks/use-scroll-reveal";
 
 const FAQ = () => {
   const faqs = [
@@ -45,8 +46,10 @@ const FAQ = () => {
     // },
   ];
 
+  const sectionRef = useScrollReveal<HTMLElement>();
+
   return (
-    <section id="faq" className="py-24">
+    <section ref={sectionRef} id="faq" className="reveal-fade-up py-24">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <span className="inline-block px-4 py-1.5 bg-primary/10 text-primary rounded-full text-sm font-medium mb-4">

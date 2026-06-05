@@ -1,10 +1,19 @@
 import { Bell } from "lucide-react";
 import appStoreBadge from "@/assets/app-store-badge.svg";
+import { useScrollReveal } from "@/hooks/use-scroll-reveal";
 
 const Download = () => {
+  const sectionRef = useScrollReveal<HTMLElement>();
+
   return (
-    <section id="download" className="py-24 bg-primary">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+    <section ref={sectionRef} id="download" className="reveal-fade-up relative py-24 bg-primary overflow-hidden">
+      {/* Floating background decoration */}
+      <div className="absolute inset-0 -z-0 pointer-events-none">
+        <div className="absolute top-10 left-[10%] w-64 h-64 bg-white/5 rounded-full blur-3xl animate-float" />
+        <div className="absolute bottom-10 right-[10%] w-80 h-80 bg-white/5 rounded-full blur-3xl animate-float" style={{ animationDelay: "-3s" }} />
+      </div>
+
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center">
           <h2 className="text-3xl sm:text-4xl font-bold text-primary-foreground mb-4">
             Start Your Journey Today

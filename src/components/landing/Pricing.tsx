@@ -1,5 +1,6 @@
 import { Check, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useScrollReveal } from "@/hooks/use-scroll-reveal";
 
 const features = [
   { name: "Flashcards", free: "18", premium: "All" },
@@ -12,8 +13,10 @@ const features = [
 ];
 
 const Pricing = () => {
+  const sectionRef = useScrollReveal<HTMLElement>();
+
   return (
-    <section id="pricing" className="py-24 bg-muted/50">
+    <section ref={sectionRef} id="pricing" className="reveal-fade-up py-24 bg-muted/50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <span className="inline-block px-4 py-1.5 bg-primary/10 text-primary rounded-full text-sm font-medium mb-4">

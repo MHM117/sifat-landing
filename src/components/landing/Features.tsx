@@ -1,12 +1,13 @@
-import { 
-  // BookOpen, 
-  Volume2, 
-  HandHeart, 
+import {
+  // BookOpen,
+  Volume2,
+  HandHeart,
   Library,
   BadgeCheck,
   Lightbulb,
   Ban
 } from "lucide-react";
+import { useScrollReveal } from "@/hooks/use-scroll-reveal";
 
 const Features = () => {
   const features = [
@@ -47,8 +48,10 @@ const Features = () => {
     // },
   ];
 
+  const sectionRef = useScrollReveal<HTMLElement>();
+
   return (
-    <section id="features" className="py-24">
+    <section ref={sectionRef} id="features" className="reveal-fade-up py-24">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <span className="inline-block px-4 py-1.5 bg-primary/10 text-primary rounded-full text-sm font-medium mb-4">
@@ -58,7 +61,7 @@ const Features = () => {
             Everything You Need to Learn
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            A comprehensive toolkit designed to help you memorise, understand, and apply 
+            A comprehensive toolkit designed to help you memorise, understand, and apply
             the Names in your daily life.
           </p>
         </div>
@@ -68,9 +71,9 @@ const Features = () => {
           {features.map((feature, index) => (
             <div
               key={index}
-              className="group p-6 bg-card rounded-2xl border border-border hover:border-primary/50 hover:shadow-lg transition-all duration-300"
+              className={`reveal-fade-up reveal-stagger-${Math.min(index + 1, 5)} group p-6 bg-card rounded-2xl card-shadow card-lift`}
             >
-              <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors duration-300">
+              <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-4 group-hover:bg-primary/20 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
                 <feature.icon className="w-6 h-6 text-primary" />
               </div>
               <h3 className="text-lg font-semibold text-foreground mb-2">

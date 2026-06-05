@@ -1,4 +1,8 @@
+import { useScrollReveal } from "@/hooks/use-scroll-reveal";
+
 const Hadith = () => {
+  const sectionRef = useScrollReveal<HTMLElement>();
+
   const hadiths = [
     {
       text: "Allah has ninety-nine Names, one-hundred less one; and he who memorized them all by heart will enter Paradise.",
@@ -13,7 +17,7 @@ const Hadith = () => {
   ];
 
   return (
-    <section className="py-24 bg-muted/50">
+    <section ref={sectionRef} className="reveal-fade-up py-24 bg-muted/50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
@@ -28,7 +32,7 @@ const Hadith = () => {
           {hadiths.map((hadith, index) => (
             <div
               key={index}
-              className="bg-card rounded-2xl p-8 shadow-sm border border-border hover:shadow-lg transition-shadow duration-300 flex flex-col h-full"
+              className={`reveal-fade-up reveal-stagger-${index + 1} bg-card rounded-2xl p-8 card-shadow card-lift flex flex-col h-full`}
             >
               <p className="text-lg text-foreground leading-relaxed italic flex-1">
                 "{hadith.text}"

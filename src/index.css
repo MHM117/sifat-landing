@@ -46,6 +46,9 @@
     --sidebar-accent-foreground: 217 30% 15%;
     --sidebar-border: 217 20% 90%;
     --sidebar-ring: 217 91% 60%;
+
+    /* Expo-out easing */
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .dark {
@@ -105,22 +108,23 @@
 }
 
 @layer utilities {
+  /* ── Hero entrance animations (play immediately) ── */
   .animate-fade-up {
-    animation: fade-up 0.6s ease-out forwards;
+    animation: fade-up 0.6s var(--ease-out-expo) forwards;
   }
 
   .animate-fade-up-delay-1 {
-    animation: fade-up 0.6s ease-out 0.1s forwards;
+    animation: fade-up 0.6s var(--ease-out-expo) 0.1s forwards;
     opacity: 0;
   }
 
   .animate-fade-up-delay-2 {
-    animation: fade-up 0.6s ease-out 0.2s forwards;
+    animation: fade-up 0.6s var(--ease-out-expo) 0.2s forwards;
     opacity: 0;
   }
 
   .animate-fade-up-delay-3 {
-    animation: fade-up 0.6s ease-out 0.3s forwards;
+    animation: fade-up 0.6s var(--ease-out-expo) 0.3s forwards;
     opacity: 0;
   }
 
@@ -130,14 +134,69 @@
 
   .animate-float-fade-in {
     opacity: 0;
-    animation: fade-up 0.6s ease-out 0.4s forwards, float 6s ease-in-out 1s infinite;
+    animation: fade-up 0.6s var(--ease-out-expo) 0.4s forwards, float 6s ease-in-out 1s infinite;
   }
 
   .animate-pulse-subtle {
     animation: pulse-subtle 3s ease-in-out infinite;
   }
 
-  /* 3D Flip Card Utilities */
+  /* ── Scroll-reveal: elements start hidden, animate when .revealed is added ── */
+  .reveal-fade-up {
+    opacity: 0;
+    transform: translateY(10px);
+    filter: blur(4px);
+    transition: opacity 0.7s var(--ease-out-expo),
+                transform 0.7s var(--ease-out-expo),
+                filter 0.7s var(--ease-out-expo);
+  }
+
+  .reveal-fade-up.revealed,
+  .revealed .reveal-fade-up {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0px);
+  }
+
+  /* Stagger delays for children */
+  .reveal-stagger-1 { transition-delay: 80ms; }
+  .reveal-stagger-2 { transition-delay: 160ms; }
+  .reveal-stagger-3 { transition-delay: 240ms; }
+  .reveal-stagger-4 { transition-delay: 320ms; }
+  .reveal-stagger-5 { transition-delay: 400ms; }
+
+  /* ── Card shadow system (light mode) ── */
+  .card-shadow {
+    box-shadow:
+      0px 0px 0px 1px rgba(0, 0, 0, 0.06),
+      0px 1px 2px -1px rgba(0, 0, 0, 0.06),
+      0px 2px 4px 0px rgba(0, 0, 0, 0.04);
+    border-color: transparent;
+  }
+
+  .card-shadow:hover {
+    box-shadow:
+      0px 0px 0px 1px rgba(0, 0, 0, 0.08),
+      0px 2px 4px -1px rgba(0, 0, 0, 0.08),
+      0px 4px 12px 0px rgba(0, 0, 0, 0.06);
+  }
+
+  /* ── Card hover lift ── */
+  .card-lift {
+    transition: transform 0.3s var(--ease-out-expo),
+                box-shadow 0.3s var(--ease-out-expo);
+  }
+
+  .card-lift:hover {
+    transform: translateY(-2px);
+  }
+
+  /* ── Button active feedback ── */
+  .btn-press:active {
+    transform: scale(0.97);
+  }
+
+  /* ── 3D Flip Card Utilities ── */
   .perspective-1000 {
     perspective: 1000px;
   }
@@ -157,16 +216,23 @@
   .-rotate-y-180 {
     transform: rotateY(-180deg);
   }
+
+  /* ── Mobile nav transition ── */
+  .mobile-nav-enter {
+    animation: nav-slide-in 0.3s var(--ease-out-expo) forwards;
+  }
 }
 
 @keyframes fade-up {
   from {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(10px);
+    filter: blur(4px);
   }
   to {
     opacity: 1;
     transform: translateY(0);
+    filter: blur(0px);
   }
 }
 
@@ -185,5 +251,40 @@
   }
   50% {
     opacity: 0.8;
+  }
+}
+
+@keyframes nav-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0px);
+  }
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .reveal-fade-up {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+
+  .card-lift:hover {
+    transform: none;
   }
 }

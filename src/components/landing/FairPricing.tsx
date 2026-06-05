@@ -1,8 +1,11 @@
 import { BookOpen, CircleCheck, XCircle, Plus, Check } from "lucide-react";
+import { useScrollReveal } from "@/hooks/use-scroll-reveal";
 
 const FairPricing = () => {
+  const sectionRef = useScrollReveal<HTMLElement>();
+
   return (
-    <section className="py-24 bg-background">
+    <section ref={sectionRef} className="reveal-fade-up py-24 bg-background">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <span className="inline-block px-4 py-1.5 bg-primary/10 text-primary rounded-full text-sm font-medium mb-4">
@@ -14,7 +17,7 @@ const FairPricing = () => {
         </div>
 
         <div className="max-w-2xl mx-auto">
-          <div className="bg-card rounded-2xl p-8 sm:p-10 border border-border shadow-lg mb-6 text-center bg-gradient-to-br from-card to-muted/30">
+          <div className="reveal-fade-up reveal-stagger-1 bg-card rounded-2xl p-8 sm:p-10 card-shadow mb-6 text-center bg-gradient-to-br from-card to-muted/30">
             <div className="inline-flex items-center justify-center w-12 h-12 bg-primary/10 rounded-xl mb-5">
               <BookOpen className="w-6 h-6 text-primary" />
             </div>
@@ -36,7 +39,7 @@ const FairPricing = () => {
           </div>
 
           <div className="grid sm:grid-cols-2 gap-4 mb-4">
-            <div className="bg-card rounded-2xl p-6 border border-border text-center hover:border-primary/50 transition-colors">
+            <div className="reveal-fade-up reveal-stagger-2 bg-card rounded-2xl p-6 card-shadow card-lift text-center">
               <div className="inline-flex items-center justify-center w-10 h-10 bg-primary/10 rounded-xl mb-4">
                 <CircleCheck className="w-5 h-5 text-primary" />
               </div>
@@ -48,7 +51,7 @@ const FairPricing = () => {
               </p>
             </div>
 
-            <div className="bg-card rounded-2xl p-6 border border-border text-center hover:border-primary/50 transition-colors">
+            <div className="reveal-fade-up reveal-stagger-3 bg-card rounded-2xl p-6 card-shadow card-lift text-center">
               <div className="inline-flex items-center justify-center w-10 h-10 bg-primary/10 rounded-xl mb-4">
                 <XCircle className="w-5 h-5 text-primary" />
               </div>
