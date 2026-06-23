@@ -1,8 +1,22 @@
 # Session Summary
 
 ## Current state
+- Android waitlist feature built (custom button → translucent modal → Mailchimp). Build passes. Needs deploy to test the live submit.
 - Motion design improvements implemented, ready to ship. Build passes cleanly.
 - PRODUCT.md created at project root for the impeccable design skill.
+
+## 2026-06-23 — Android waitlist
+
+### What we built
+- **Custom Android waitlist button** (`src/components/landing/AndroidWaitlistButton.tsx`) — black pill matching the App Store badge (h-12 × 160px), Android-green robot icon, "ANDROID / Join Waitlist" label. Sits beside the App Store badge in **Hero** and **Download** (side-by-side desktop, stacked mobile).
+- **Translucent modal** (`WaitlistDialog.tsx`) — glassmorphic shadcn Dialog. Single email field + "Notify me". States: idle / loading (spinner) / success ("You're on the list! 🎉"). Inline validation via zod. Single opt-in.
+- **Serverless function** (`api/waitlist.ts`) — Vercel Node fn, dependency-free (native fetch + node:crypto). Upserts member (`status_if_new: subscribed`, idempotent) then applies tag **"Android Waiting List"**. Datacenter derived from API key suffix.
+- Shared `AndroidIcon.tsx` used by button + modal.
+
+### Config / deploy notes
+- Env vars `MAILCHIMP_API_KEY` + `MAILCHIMP_AUDIENCE_ID` already set in Vercel by user.
+- **Local `npm run dev` (Vite) does NOT run the serverless fn** — modal UI/states work locally, but real submit only works on Vercel (preview/prod) or via `vercel dev`. User will push to origin to test.
+- `vercel.json` catch-all rewrite does not intercept `/api/*` (filesystem takes priority) — no change needed.
 
 ## 2026-06-05
 
