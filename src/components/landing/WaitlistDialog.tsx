@@ -71,7 +71,7 @@ const WaitlistDialog = ({ children }: { children: ReactNode }) => {
             <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#3DDC84]/15">
               <Check className="h-7 w-7 text-[#3DDC84]" strokeWidth={2.5} />
             </div>
-            <DialogTitle className="mt-5 text-xl font-bold">You're on the list! 🎉</DialogTitle>
+            <DialogTitle className="mt-5 text-xl font-bold">You're on the List!</DialogTitle>
             <DialogDescription className="mt-2 text-base">
               We'll email you the moment Sifat lands on Android.
             </DialogDescription>
@@ -84,8 +84,8 @@ const WaitlistDialog = ({ children }: { children: ReactNode }) => {
 
             <DialogTitle className="mt-5 text-xl font-bold">Be the first to know</DialogTitle>
             <DialogDescription className="mt-2 text-base">
-              Sifat is coming to Android. Drop your email and we'll let you know the
-              moment it's ready — no spam, ever.
+              Sifat will come to Android. Drop your email and we'll let you know the
+              moment it's ready.
             </DialogDescription>
 
             <form onSubmit={handleSubmit} className="mt-6 w-full space-y-3">
@@ -124,7 +124,7 @@ const WaitlistDialog = ({ children }: { children: ReactNode }) => {
               </button>
             </form>
 
-            <p className="mt-3 text-xs text-muted-foreground">Unsubscribe anytime.</p>
+            <p className="mt-3 text-xs text-muted-foreground">Your Privacy is Protected</p>
           </div>
         )}
       </DialogContent>
