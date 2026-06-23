@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
-import { Bell } from "lucide-react";
 import appStoreBadge from "@/assets/app-store-badge.svg";
+import AndroidWaitlistButton from "@/components/landing/AndroidWaitlistButton";
 import homeMockup from "@/assets/home_mockup.png";
 import flashcardMockup from "@/assets/flashcard_mockup.png";
 import listMockup from "@/assets/list_mockup.png";
@@ -45,23 +45,20 @@ const Hero = () => {
               Build deep understanding through daily flashcards that adapt to you. Hear proper pronunciation, challenge yourself with quizzes, and use the Names confidently in your dua.
             </p>
 
-            <div className="animate-fade-up-delay-3 flex flex-col items-center lg:items-start gap-4">
-              <a 
-                href="https://apps.apple.com/us/app/sifat-learn-names-of-allah/id6758858851" 
+            <div className="animate-fade-up-delay-3 flex flex-col sm:flex-row items-center lg:items-start sm:justify-center lg:justify-start gap-3">
+              <a
+                href="https://apps.apple.com/us/app/sifat-learn-names-of-allah/id6758858851"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="h-12 w-[160px] flex items-center justify-center hover:opacity-80 transition-opacity"
               >
-                <img 
-                  src={appStoreBadge} 
-                  alt="Download on the App Store" 
-                  className="h-full w-full object-contain" 
+                <img
+                  src={appStoreBadge}
+                  alt="Download on the App Store"
+                  className="h-full w-full object-contain"
                 />
               </a>
-              {/* <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-5 py-2.5 rounded-full">
-                <Bell className="w-4 h-4" />
-                <span className="text-sm font-medium">Coming Soon to Android</span>
-              </div> */}
+              <AndroidWaitlistButton />
             </div>
           </div>
 

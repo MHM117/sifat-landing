@@ -1,5 +1,5 @@
-import { Bell } from "lucide-react";
 import appStoreBadge from "@/assets/app-store-badge.svg";
+import AndroidWaitlistButton from "@/components/landing/AndroidWaitlistButton";
 import { useScrollReveal } from "@/hooks/use-scroll-reveal";
 
 const Download = () => {
@@ -22,23 +22,20 @@ const Download = () => {
             Join thousands of Muslims on the path to knowing Allah through His Beautiful Names.
           </p>
 
-          <div className="flex flex-col items-center gap-4">
-            <a 
-              href="https://apps.apple.com/us/app/sifat-learn-names-of-allah/id6758858851" 
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+            <a
+              href="https://apps.apple.com/us/app/sifat-learn-names-of-allah/id6758858851"
               target="_blank"
               rel="noopener noreferrer"
               className="h-12 w-[160px] flex items-center justify-center hover:opacity-80 transition-opacity"
             >
-              <img 
-                src={appStoreBadge} 
-                alt="Download on the App Store" 
-                className="h-full w-full object-contain" 
+              <img
+                src={appStoreBadge}
+                alt="Download on the App Store"
+                className="h-full w-full object-contain"
               />
             </a>
-            {/* <div className="inline-flex items-center gap-2 bg-primary-foreground/10 backdrop-blur-sm text-primary-foreground px-5 py-2.5 rounded-full">
-              <Bell className="w-4 h-4" />
-              <span className="text-sm font-medium">Coming Soon to Android</span>
-            </div> */}
+            <AndroidWaitlistButton />
           </div>
         </div>
       </div>
