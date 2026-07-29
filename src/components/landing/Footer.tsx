@@ -6,6 +6,7 @@ const Footer = () => {
 
   const links = {
     legal: [
+      { label: "Explore the Names", href: "/names" },
       { label: "Privacy Policy", href: "/privacy" },
       { label: "Terms of Service", href: "/terms" },
       { label: "Contact", href: "/contact" },
@@ -35,7 +36,7 @@ const Footer = () => {
 
           {/* Legal Links */}
           <div>
-            <h4 className="font-semibold text-foreground mb-4">Legal</h4>
+            <h4 className="font-semibold text-foreground mb-4">Links</h4>
             <ul className="space-y-2">
               {links.legal.map((link) => (
                 <li key={link.label}>

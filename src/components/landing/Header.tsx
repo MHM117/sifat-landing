@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import sifatLogo from "@/assets/sifat-logo.png";
@@ -6,10 +7,13 @@ import sifatLogo from "@/assets/sifat-logo.png";
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  // Root-relative so these still work from routes other than "/".
+  // Index.tsx reads the hash on arrival and smooth-scrolls to the section.
   const navLinks = [
-    { label: "Features", href: "#features" },
-    { label: "Pricing", href: "#pricing" },
-    { label: "FAQ", href: "#faq" },
+    { label: "Features", to: "/#features" },
+    { label: "Pricing", to: "/#pricing" },
+    { label: "FAQ", to: "/#faq" },
+    { label: "Explore the Names", to: "/names" },
   ];
 
   return (
@@ -17,28 +21,28 @@ const Header = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <a href="/" className="flex items-center gap-2">
+          <Link to="/" className="flex items-center gap-2">
             <img src={sifatLogo} alt="Sifat" className="h-12 w-auto" />
             <span className="font-semibold text-xl text-foreground">Sifat</span>
-          </a>
+          </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-8">
+          <nav className="hidden md:flex items-center gap-6 lg:gap-8">
             {navLinks.map((link) => (
-              <a
+              <Link
                 key={link.label}
-                href={link.href}
-                className="text-muted-foreground hover:text-foreground transition-colors duration-200"
+                to={link.to}
+                className="text-muted-foreground hover:text-foreground transition-colors duration-200 whitespace-nowrap"
               >
                 {link.label}
-              </a>
+              </Link>
             ))}
           </nav>
 
           {/* CTA Button */}
           <div className="hidden md:block">
             <Button asChild>
-              <a href="#download">Download App</a>
+              <Link to="/#download">Download App</Link>
             </Button>
           </div>
 
@@ -57,17 +61,19 @@ const Header = () => {
           <nav className="md:hidden py-4 border-t border-border mobile-nav-enter">
             <div className="flex flex-col gap-4">
               {navLinks.map((link) => (
-                <a
+                <Link
                   key={link.label}
-                  href={link.href}
+                  to={link.to}
                   className="text-muted-foreground hover:text-foreground transition-colors duration-200 py-2"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {link.label}
-                </a>
+                </Link>
               ))}
               <Button asChild className="mt-2">
-                <a href="#download">Download App</a>
+                <Link to="/#download" onClick={() => setIsMenuOpen(false)}>
+                  Download App
+                </Link>
               </Button>
             </div>
           </nav>
