@@ -19,6 +19,9 @@
     --primary: 217 92% 68%;
     --primary-foreground: 0 0% 100%;
 
+    /* Readable brand blue for text sitting on primary/10 tints (5.46:1) */
+    --primary-deep: 217 91% 45%;
+
     /* Darker blue secondary - #3B82F6 */
     --secondary: 217 91% 60%;
     --secondary-foreground: 0 0% 100%;
@@ -64,6 +67,9 @@
     /* Blue primary for dark mode - #3B82F6 */
     --primary: 217 91% 60%;
     --primary-foreground: 0 0% 100%;
+
+    /* Lightens in dark mode, where primary/10 tints are dark (5.91:1) */
+    --primary-deep: 217 92% 68%;
 
     /* Teal secondary */
     --secondary: 175 82% 32%;

@@ -33,13 +33,13 @@ const Names = () => {
               <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-6">
                 Names of Allah
               </h1>
-              <blockquote className="inline-block max-w-2xl px-6 sm:px-8 py-4 bg-primary/10 text-primary rounded-2xl text-sm sm:text-base font-medium">
+              <blockquote className="inline-block max-w-2xl px-6 sm:px-8 py-4 bg-primary/10 text-primary-deep rounded-2xl text-sm sm:text-base font-medium">
                 <p className="text-pretty">
                   Allah has the Most Beautiful Names. So call upon Him by them, and
                   keep away from those who abuse His Names. They will be punished
                   for what they used to do.
                 </p>
-                <cite className="block mt-1 text-xs not-italic text-primary/70">
+                <cite className="block mt-2 text-xs not-italic tracking-wide text-primary-deep">
                   Quran 7:180
                 </cite>
               </blockquote>

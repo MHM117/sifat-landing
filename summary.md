@@ -18,6 +18,14 @@
 - Footer's "Legal" column renamed "Links" now that it holds a non-legal entry.
 - Avoided `prose` (typography plugin is installed but never registered in `tailwind.config.ts`, so those classes are inert), `py-20`, `max-w-6xl`, and `md:` heading breakpoints. None are used in this codebase.
 
+### Design audit fixes (post-build)
+- **Row numbers use `name.id`, never the filtered index.** Searching used to renumber results from 01, misstating a Name's position in its compilation.
+- **`normalizeForSearch()` in `src/data/names.ts`** folds spelling variants so "rahman", "Ar-Rahmaan" and "ar rahmaan" all hit AR-RAHMAAN. Collapses doubled letters, maps e→i and o→u, strips separators, and folds Arabic harakat/tatweel/alef variants so bare Arabic input works. Applied to both query and entry. Verified against 12 cases.
+- **`--primary-deep` token added** (`217 91% 45%` light, `217 92% 68%` dark; registered in `tailwind.config.ts` as `primary-deep`). `text-primary` on `bg-primary/10` was 2.51:1; now 5.46:1.
+- **Active toggle pill** switched from white-on-primary (2.75:1) to `primary-deep` on `bg-card` (5.98:1), which also reads as a more conventional segmented control.
+- Sticky control bar (`top-16`, under the fixed header), search clears on compilation switch, toggle targets raised to 40px in a 48px track, search input to 48px.
+- **Deliberately skipped**: list semantics for screen readers (`ul`/`li`), at the user's explicit direction.
+
 ### Known limitation
 - SEO ceiling: this is a client-rendered SPA with no prerender. Google runs JS and reads the meta, but other crawlers and social scrapers see the homepage tags in the raw HTML. Real fix is prerendering (`vite-plugin-prerender` or static generation), deferred until the page carries real content worth ranking.
 
