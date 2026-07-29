@@ -1,0 +1,203 @@
+/**
+ * Regenerates src/data/names.ts from the markdown tables at the repo root.
+ *
+ *   node scripts/generate-names.mjs
+ *
+ * The markdown files are the source of truth. Edit those, rerun this, never
+ * hand-edit the generated arrays in names.ts.
+ */
+import { readFileSync, writeFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+import { dirname, join } from "node:path";
+
+const root = join(dirname(fileURLToPath(import.meta.url)), "..");
+
+const SOURCES = [
+  { key: "tirmidhi", file: "names_tirmidhi.md" },
+  { key: "uthaymeen", file: "names_ibn_uthaymeen.md" },
+];
+
+/** "AL-MU'MIN" -> "al-mumin"; "MAALIK-UL-MULK" -> "maalik-ul-mulk" */
+const toSlug = (translit) =>
+  translit
+    .toLowerCase()
+    .replace(/['’ʿʾ]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+
+function parse(file) {
+  const rows = [];
+  for (const line of readFileSync(join(root, file), "utf8").split("\n")) {
+    const t = line.trim();
+    if (!t.startsWith("|")) continue;
+    const cells = t.slice(1, -1).split("|").map((c) => c.trim());
+    if (cells.length !== 4) continue;
+    const [num, arabic, transliteration, meaning] = cells;
+    if (!/^\d+$/.test(num)) continue; // header and separator rows
+    rows.push({ id: Number(num), arabic, transliteration, meaning });
+  }
+  return rows;
+}
+
+const data = {};
+let problems = 0;
+
+for (const { key, file } of SOURCES) {
+  const rows = parse(file).map((r) => ({ ...r, slug: toSlug(r.transliteration) }));
+
+  // Ids must be a clean 1..n run, or the numbering column lies.
+  const expected = rows.map((_, i) => i + 1);
+  const gaps = rows.filter((r, i) => r.id !== expected[i]);
+  if (gaps.length) {
+    console.error(`${file}: ids are not sequential, first offender #${gaps[0].id}`);
+    problems++;
+  }
+
+  // Slugs become detail-page URLs, so collisions inside a list are fatal.
+  const seen = new Map();
+  for (const r of rows) {
+    if (seen.has(r.slug)) {
+      console.error(`${file}: duplicate slug "${r.slug}" (#${seen.get(r.slug)} and #${r.id})`);
+      problems++;
+    }
+    seen.set(r.slug, r.id);
+  }
+
+  for (const r of rows) {
+    if (!r.arabic || !r.transliteration || !r.meaning) {
+      console.error(`${file}: #${r.id} has an empty cell`);
+      problems++;
+    }
+  }
+
+  data[key] = rows;
+  console.log(`${file}: ${rows.length} names`);
+}
+
+if (problems) {
+  console.error(`\n${problems} problem(s). Nothing written.`);
+  process.exit(1);
+}
+
+const entry = (r) =>
+  `    {
+      id: ${r.id},
+      slug: ${JSON.stringify(r.slug)},
+      arabic: ${JSON.stringify(r.arabic)},
+      transliteration: ${JSON.stringify(r.transliteration)},
+      meaning: ${JSON.stringify(r.meaning)},
+    },`;
+
+const out = `export type NameEntry = {
+  id: number;
+  /** Used for the future detail page route: /names/{slug} */
+  slug: string;
+  arabic: string;
+  transliteration: string;
+  meaning: string;
+  /**
+   * Set to true once /names/{slug} exists. Until then the row shows no chevron
+   * and no hover state, so it never suggests a link that goes nowhere.
+   * Flip these on one at a time as the detail pages are written.
+   */
+  hasDetail?: boolean;
+};
+
+/**
+ * Folds one word into a comparable form, so "rahman", "Rahmaan" and "RAHMAAN"
+ * all reduce to the same stem. Applied to both the query and the entry, so the
+ * two always meet in the middle.
+ *
+ * Arabic is folded too: harakat, tatweel and the alef variants are stripped,
+ * letting someone type a Name without diacritics and still find it.
+ */
+function foldWord(value: string): string {
+  return (
+    value
+      .toLowerCase()
+      // Harakat, superscript alef, tatweel.
+      .replace(/[\\u064B-\\u065F\\u0670\\u0640]/g, "")
+      // Alef variants collapse to bare alef.
+      .replace(/[\\u0622\\u0623\\u0625\\u0671]/g, "\\u0627")
+      // Alef maksura to ya.
+      .replace(/\\u0649/g, "\\u064A")
+      // Drop apostrophes and anything else that is not a letter or digit.
+      .replace(/[^a-z0-9\\u0600-\\u06FF]/g, "")
+      // "rahmaan" and "rahman" collapse to the same stem.
+      .replace(/(.)\\1+/g, "$1")
+      // Long-vowel spellings: "raheem"/"rahim", "noor"/"nur".
+      .replace(/e/g, "i")
+      .replace(/o/g, "u")
+  );
+}
+
+/** Arabic definite article, which is glued to the front of the word. */
+const AL = "\\u0627\\u0644";
+
+/**
+ * Splits text into folded words. Matching is per word rather than across the
+ * whole string, because a plain substring test makes "alee" match "AL-MALIK"
+ * and "noor" match "The Governor".
+ */
+export function toSearchTokens(value: string): string[] {
+  const tokens: string[] = [];
+  for (const raw of value.split(/[\\s\\-_/,.()]+/)) {
+    const word = foldWord(raw);
+    if (!word) continue;
+    tokens.push(word);
+    // Index "\\u0627\\u0644\\u0635\\u0628\\u0648\\u0631" as "\\u0635\\u0628\\u0648\\u0631" too, so searching a Name
+    // without its article still finds it. The Latin transliterations already
+    // carry the article as a separate hyphenated token.
+    if (word.startsWith(AL) && word.length > 2) tokens.push(word.slice(2));
+  }
+  return tokens;
+}
+
+/**
+ * True when every word of the query prefixes some word of the entry. Prefix
+ * rather than substring, so "rahm" finds AR-RAHMAAN without "ali" dragging in
+ * half the list.
+ */
+export function matchesQuery(entryTokens: string[], query: string): boolean {
+  const terms = toSearchTokens(query);
+  if (!terms.length) return true;
+  return terms.every((term) =>
+    entryTokens.some((token) => token.startsWith(term))
+  );
+}
+
+/** All searchable words for one Name. */
+export function tokensFor(entry: NameEntry): string[] {
+  return [
+    ...toSearchTokens(entry.arabic),
+    ...toSearchTokens(entry.transliteration),
+    ...toSearchTokens(entry.meaning),
+  ];
+}
+
+export type Compilation = "tirmidhi" | "uthaymeen";
+
+export const COMPILATIONS: { value: Compilation; label: string }[] = [
+  { value: "tirmidhi", label: "Tirmidhi" },
+  { value: "uthaymeen", label: "Ibn al-Uthaymeen" },
+];
+
+export const DEFAULT_COMPILATION: Compilation = "tirmidhi";
+
+/**
+ * GENERATED FILE. Do not edit the arrays by hand.
+ * Source: names_tirmidhi.md, names_ibn_uthaymeen.md at the repo root.
+ * Regenerate with: node scripts/generate-names.mjs
+ */
+export const NAMES: Record<Compilation, NameEntry[]> = {
+  tirmidhi: [
+${data.tirmidhi.map(entry).join("\n")}
+  ],
+  uthaymeen: [
+${data.uthaymeen.map(entry).join("\n")}
+  ],
+};
+`;
+
+writeFileSync(join(root, "src/data/names.ts"), out);
+console.log("\nWrote src/data/names.ts");

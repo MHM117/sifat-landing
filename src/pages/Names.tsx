@@ -11,7 +11,7 @@ const Names = () => {
   useDocumentMeta({
     title: "Names of Allah: Full List with Meanings | Sifat",
     description:
-      "Browse the 99 Names of Allah in Arabic with transliteration and meanings. Switch between the Tirmidhi and Ibn al-Uthaymeen compilations, and search any Name.",
+      "Browse the Names of Allah in Arabic with transliteration and meanings. Switch between the 99 Names narrated by Tirmidhi and the compilation of Ibn al-Uthaymeen, and search any Name.",
     canonical: "https://sifat.app/names",
   });
 

@@ -7,7 +7,8 @@ import {
   COMPILATIONS,
   DEFAULT_COMPILATION,
   NAMES,
-  normalizeForSearch,
+  matchesQuery,
+  tokensFor,
   type Compilation,
 } from "@/data/names";
 
@@ -17,22 +18,13 @@ const NamesList = () => {
 
   const names = NAMES[compilation];
 
-  // Precomputed once per compilation so typing never re-normalises the list.
-  const haystacks = useMemo(
-    () =>
-      names.map((name) =>
-        normalizeForSearch(
-          `${name.arabic} ${name.transliteration} ${name.meaning}`
-        )
-      ),
-    [names]
-  );
+  // Tokenised once per compilation, so typing never re-folds 99 rows.
+  const tokens = useMemo(() => names.map(tokensFor), [names]);
 
   const filtered = useMemo(() => {
-    const term = normalizeForSearch(query);
-    if (!term) return names;
-    return names.filter((_, i) => haystacks[i].includes(term));
-  }, [names, haystacks, query]);
+    if (!query.trim()) return names;
+    return names.filter((_, i) => matchesQuery(tokens[i], query));
+  }, [names, tokens, query]);
 
   const activeLabel =
     COMPILATIONS.find((c) => c.value === compilation)?.label ?? "";
@@ -106,7 +98,7 @@ const NamesList = () => {
           className={`${NAMES_GRID} hidden sm:grid bg-muted/60 border-b border-border text-xs font-medium uppercase tracking-wider text-muted-foreground`}
         >
           <div className="py-2.5 border-r border-border/60" aria-hidden="true" />
-          <div className="flex items-center px-4 py-2.5 border-r border-border/60">
+          <div className="flex items-center justify-end px-4 py-2.5 border-r border-border/60">
             Name
           </div>
           <div className="flex items-center px-4 py-2.5 border-r border-border/60">

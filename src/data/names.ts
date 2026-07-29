@@ -14,34 +14,75 @@ export type NameEntry = {
 };
 
 /**
- * Folds the many spellings people actually type into one comparable form, so
- * "rahman", "Ar-Rahmaan" and "ar rahmaan" all match the same Name. Applied to
- * both the query and the entry, so the two always meet in the middle.
+ * Folds one word into a comparable form, so "rahman", "Rahmaan" and "RAHMAAN"
+ * all reduce to the same stem. Applied to both the query and the entry, so the
+ * two always meet in the middle.
  *
  * Arabic is folded too: harakat, tatweel and the alef variants are stripped,
  * letting someone type a Name without diacritics and still find it.
- *
- * Unicode escapes rather than literal Arabic, so the character classes stay
- * readable in editors that reorder bidirectional text.
  */
-export function normalizeForSearch(value: string): string {
+function foldWord(value: string): string {
   return (
     value
       .toLowerCase()
-      // Harakat (U+064B-U+065F), superscript alef (U+0670), tatweel (U+0640).
-      .replace(/[ً-ٰٟـ]/g, "")
+      // Harakat, superscript alef, tatweel.
+      .replace(/[\u064B-\u065F\u0670\u0640]/g, "")
       // Alef variants collapse to bare alef.
-      .replace(/[آأإٱ]/g, "ا")
+      .replace(/[\u0622\u0623\u0625\u0671]/g, "\u0627")
       // Alef maksura to ya.
-      .replace(/ى/g, "ي")
-      // Drop hyphens, spaces, apostrophes and any other separator.
-      .replace(/[^a-z0-9؀-ۿ]/g, "")
+      .replace(/\u0649/g, "\u064A")
+      // Drop apostrophes and anything else that is not a letter or digit.
+      .replace(/[^a-z0-9\u0600-\u06FF]/g, "")
       // "rahmaan" and "rahman" collapse to the same stem.
       .replace(/(.)\1+/g, "$1")
       // Long-vowel spellings: "raheem"/"rahim", "noor"/"nur".
       .replace(/e/g, "i")
       .replace(/o/g, "u")
   );
+}
+
+/** Arabic definite article, which is glued to the front of the word. */
+const AL = "\u0627\u0644";
+
+/**
+ * Splits text into folded words. Matching is per word rather than across the
+ * whole string, because a plain substring test makes "alee" match "AL-MALIK"
+ * and "noor" match "The Governor".
+ */
+export function toSearchTokens(value: string): string[] {
+  const tokens: string[] = [];
+  for (const raw of value.split(/[\s\-_/,.()]+/)) {
+    const word = foldWord(raw);
+    if (!word) continue;
+    tokens.push(word);
+    // Index "\u0627\u0644\u0635\u0628\u0648\u0631" as "\u0635\u0628\u0648\u0631" too, so searching a Name
+    // without its article still finds it. The Latin transliterations already
+    // carry the article as a separate hyphenated token.
+    if (word.startsWith(AL) && word.length > 2) tokens.push(word.slice(2));
+  }
+  return tokens;
+}
+
+/**
+ * True when every word of the query prefixes some word of the entry. Prefix
+ * rather than substring, so "rahm" finds AR-RAHMAAN without "ali" dragging in
+ * half the list.
+ */
+export function matchesQuery(entryTokens: string[], query: string): boolean {
+  const terms = toSearchTokens(query);
+  if (!terms.length) return true;
+  return terms.every((term) =>
+    entryTokens.some((token) => token.startsWith(term))
+  );
+}
+
+/** All searchable words for one Name. */
+export function tokensFor(entry: NameEntry): string[] {
+  return [
+    ...toSearchTokens(entry.arabic),
+    ...toSearchTokens(entry.transliteration),
+    ...toSearchTokens(entry.meaning),
+  ];
 }
 
 export type Compilation = "tirmidhi" | "uthaymeen";
@@ -54,65 +95,1392 @@ export const COMPILATIONS: { value: Compilation; label: string }[] = [
 export const DEFAULT_COMPILATION: Compilation = "tirmidhi";
 
 /**
- * PLACEHOLDER CONTENT.
- * Three names per compilation so the layout can be reviewed. The full
- * 99-name lists replace these arrays without any component changes.
+ * GENERATED FILE. Do not edit the arrays by hand.
+ * Source: names_tirmidhi.md, names_ibn_uthaymeen.md at the repo root.
+ * Regenerate with: node scripts/generate-names.mjs
  */
 export const NAMES: Record<Compilation, NameEntry[]> = {
   tirmidhi: [
     {
       id: 1,
       slug: "ar-rahmaan",
-      arabic: "ٱلرَّحْمَٰن",
+      arabic: "الرَّحْمَـٰنُ",
       transliteration: "AR-RAHMAAN",
       meaning: "The Most Gracious",
     },
     {
       id: 2,
       slug: "ar-raheem",
-      arabic: "ٱلرَّحِيم",
+      arabic: "الرَّحِيمُ",
       transliteration: "AR-RAHEEM",
       meaning: "The Most Merciful",
     },
     {
       id: 3,
       slug: "al-malik",
-      arabic: "ٱلْمَلِك",
+      arabic: "الْمَلِكُ",
       transliteration: "AL-MALIK",
       meaning: "The King",
     },
-    // Temporary stress-test row: the longest Name in the list, kept until the
-    // real content lands so the wrapping behaviour stays visible. Its id is 85
-    // on purpose, showing the number tracks the compilation, not row position.
+    {
+      id: 4,
+      slug: "al-quddoos",
+      arabic: "الْقُدُّوسُ",
+      transliteration: "AL-QUDDOOS",
+      meaning: "The Holy",
+    },
+    {
+      id: 5,
+      slug: "as-salaam",
+      arabic: "السَّلاَمُ",
+      transliteration: "AS-SALAAM",
+      meaning: "The Giver of Peace",
+    },
+    {
+      id: 6,
+      slug: "al-mumin",
+      arabic: "الْمُؤْمِنُ",
+      transliteration: "AL-MU'MIN",
+      meaning: "The Granter of Faith",
+    },
+    {
+      id: 7,
+      slug: "al-muhaymin",
+      arabic: "الْمُهَيْمِنُ",
+      transliteration: "AL-MUHAYMIN",
+      meaning: "The Overseer",
+    },
+    {
+      id: 8,
+      slug: "al-azeez",
+      arabic: "الْعَزِيزُ",
+      transliteration: "AL-'AZEEZ",
+      meaning: "The All Mighty",
+    },
+    {
+      id: 9,
+      slug: "al-jabbaar",
+      arabic: "الْجَبَّارُ",
+      transliteration: "AL-JABBAAR",
+      meaning: "The Compeller",
+    },
+    {
+      id: 10,
+      slug: "al-mutakabbir",
+      arabic: "الْمُتَكَبِّرُ",
+      transliteration: "AL-MUTAKABBIR",
+      meaning: "The Supreme",
+    },
+    {
+      id: 11,
+      slug: "al-khaaliq",
+      arabic: "الْخَالِقُ",
+      transliteration: "AL-KHAALIQ",
+      meaning: "The Creator of Everything",
+    },
+    {
+      id: 12,
+      slug: "al-baari",
+      arabic: "الْبَارِئُ",
+      transliteration: "AL-BAARI'",
+      meaning: "The Producer",
+    },
+    {
+      id: 13,
+      slug: "al-musawwir",
+      arabic: "الْمُصَوِّرُ",
+      transliteration: "AL-MUSAWWIR",
+      meaning: "The Fashioner",
+    },
+    {
+      id: 14,
+      slug: "al-ghaffaar",
+      arabic: "الْغَفَّارُ",
+      transliteration: "AL-GHAFFAAR",
+      meaning: "The Oft-Forgiving",
+    },
+    {
+      id: 15,
+      slug: "al-qahhaar",
+      arabic: "الْقَهَّارُ",
+      transliteration: "AL-QAHHAAR",
+      meaning: "The Conqueror",
+    },
+    {
+      id: 16,
+      slug: "al-wahhaab",
+      arabic: "الْوَهَّابُ",
+      transliteration: "AL-WAHHAAB",
+      meaning: "The Bestower",
+    },
+    {
+      id: 17,
+      slug: "ar-razzaaq",
+      arabic: "الرَّزَّاقُ",
+      transliteration: "AR-RAZZAAQ",
+      meaning: "The Provider",
+    },
+    {
+      id: 18,
+      slug: "al-fattaah",
+      arabic: "الْفَتَّاحُ",
+      transliteration: "AL-FATTAAH",
+      meaning: "The Opener",
+    },
+    {
+      id: 19,
+      slug: "al-aleem",
+      arabic: "الْعَلِيمُ",
+      transliteration: "AL-'ALEEM",
+      meaning: "The All Knowing",
+    },
+    {
+      id: 20,
+      slug: "al-qaabid",
+      arabic: "الْقَابِضُ",
+      transliteration: "AL-QAABID",
+      meaning: "The Withholder",
+    },
+    {
+      id: 21,
+      slug: "al-baasit",
+      arabic: "الْبَاسِطُ",
+      transliteration: "AL-BAASIT",
+      meaning: "The Extender",
+    },
+    {
+      id: 22,
+      slug: "al-khaafidh",
+      arabic: "الْخَافِضُ",
+      transliteration: "AL-KHAAFIDH",
+      meaning: "The Reducer",
+    },
+    {
+      id: 23,
+      slug: "ar-raafi",
+      arabic: "الرَّافِعُ",
+      transliteration: "AR-RAAFI'",
+      meaning: "The Raiser",
+    },
+    {
+      id: 24,
+      slug: "al-muizz",
+      arabic: "الْمُعِزُّ",
+      transliteration: "AL-MU'IZZ",
+      meaning: "The Honourer",
+    },
+    {
+      id: 25,
+      slug: "al-mudhill",
+      arabic: "الْمُذِلُّ",
+      transliteration: "AL-MUDHILL",
+      meaning: "The One Who Humbles",
+    },
+    {
+      id: 26,
+      slug: "as-samee",
+      arabic: "السَّمِيعُ",
+      transliteration: "AS-SAMEE'",
+      meaning: "The All-Hearing",
+    },
+    {
+      id: 27,
+      slug: "al-baseer",
+      arabic: "الْبَصِيرُ",
+      transliteration: "AL-BASEER",
+      meaning: "The All-Seeing",
+    },
+    {
+      id: 28,
+      slug: "al-hakam",
+      arabic: "الْحَكَمُ",
+      transliteration: "AL-HAKAM",
+      meaning: "The Judge",
+    },
+    {
+      id: 29,
+      slug: "al-adl",
+      arabic: "الْعَدْلُ",
+      transliteration: "AL-'ADL",
+      meaning: "The Just",
+    },
+    {
+      id: 30,
+      slug: "al-lateef",
+      arabic: "الْلَّطِيفُ",
+      transliteration: "AL-LATEEF",
+      meaning: "The Gentle",
+    },
+    {
+      id: 31,
+      slug: "al-khabeer",
+      arabic: "الْخَبِيرُ",
+      transliteration: "AL-KHABEER",
+      meaning: "The All-Aware",
+    },
+    {
+      id: 32,
+      slug: "al-haleem",
+      arabic: "الْحَلِيمُ",
+      transliteration: "AL-HALEEM",
+      meaning: "The Forbearing",
+    },
+    {
+      id: 33,
+      slug: "al-adheem",
+      arabic: "الْعَظِيمُ",
+      transliteration: "AL-'ADHEEM",
+      meaning: "The Magnificent",
+    },
+    {
+      id: 34,
+      slug: "al-ghafoor",
+      arabic: "الْغَفُورُ",
+      transliteration: "AL-GHAFOOR",
+      meaning: "The All Forgiving",
+    },
+    {
+      id: 35,
+      slug: "ash-shakoor",
+      arabic: "الشَّكُورُ",
+      transliteration: "ASH-SHAKOOR",
+      meaning: "The Grateful",
+    },
+    {
+      id: 36,
+      slug: "al-alee",
+      arabic: "الْعَلِيُّ",
+      transliteration: "AL-'ALEE",
+      meaning: "The Exalted",
+    },
+    {
+      id: 37,
+      slug: "al-kabeer",
+      arabic: "الْكَبِيرُ",
+      transliteration: "AL-KABEER",
+      meaning: "The Most Great",
+    },
+    {
+      id: 38,
+      slug: "al-hafeedh",
+      arabic: "الْحَفِيظُ",
+      transliteration: "AL-HAFEEDH",
+      meaning: "The Protector",
+    },
+    {
+      id: 39,
+      slug: "al-muqeet",
+      arabic: "الْمُقِيتُ",
+      transliteration: "AL-MUQEET",
+      meaning: "The Sustainer",
+    },
+    {
+      id: 40,
+      slug: "al-haseeb",
+      arabic: "الْحَسِيبُ",
+      transliteration: "AL-HASEEB",
+      meaning: "The Reckoner",
+    },
+    {
+      id: 41,
+      slug: "al-jaleel",
+      arabic: "الْجَلِيلُ",
+      transliteration: "AL-JALEEL",
+      meaning: "The Majestic",
+    },
+    {
+      id: 42,
+      slug: "al-kareem",
+      arabic: "الْكَرِيمُ",
+      transliteration: "AL-KAREEM",
+      meaning: "The Noble",
+    },
+    {
+      id: 43,
+      slug: "ar-raqeeb",
+      arabic: "الرَّقِيبُ",
+      transliteration: "AR-RAQEEB",
+      meaning: "The Watchful",
+    },
+    {
+      id: 44,
+      slug: "al-mujeeb",
+      arabic: "الْمُجِيبُ",
+      transliteration: "AL-MUJEEB",
+      meaning: "The Responsive",
+    },
+    {
+      id: 45,
+      slug: "al-waasi",
+      arabic: "الْوَاسِعُ",
+      transliteration: "AL-WAASI'",
+      meaning: "The Boundless",
+    },
+    {
+      id: 46,
+      slug: "al-hakeem",
+      arabic: "الْحَكِيمُ",
+      transliteration: "AL-HAKEEM",
+      meaning: "The Wise",
+    },
+    {
+      id: 47,
+      slug: "al-wadood",
+      arabic: "الْوَدُودُ",
+      transliteration: "AL-WADOOD",
+      meaning: "The Loving",
+    },
+    {
+      id: 48,
+      slug: "al-majeed",
+      arabic: "الْمَجِيدُ",
+      transliteration: "AL-MAJEED",
+      meaning: "The Glorious",
+    },
+    {
+      id: 49,
+      slug: "al-baith",
+      arabic: "الْبَاعِثُ",
+      transliteration: "AL-BA'ITH",
+      meaning: "The Resurrector",
+    },
+    {
+      id: 50,
+      slug: "ash-shaheed",
+      arabic: "الشَّهِيدُ",
+      transliteration: "ASH-SHAHEED",
+      meaning: "The Witness",
+    },
+    {
+      id: 51,
+      slug: "al-haqq",
+      arabic: "الْحَقُّ",
+      transliteration: "AL-HAQQ",
+      meaning: "The Truth",
+    },
+    {
+      id: 52,
+      slug: "al-wakeel",
+      arabic: "الْوَكِيلُ",
+      transliteration: "AL-WAKEEL",
+      meaning: "The Disposer of Affairs",
+    },
+    {
+      id: 53,
+      slug: "al-qawiyy",
+      arabic: "الْقَوِيُّ",
+      transliteration: "AL-QAWIYY",
+      meaning: "The Strong",
+    },
+    {
+      id: 54,
+      slug: "al-mateen",
+      arabic: "الْمَتِينُ",
+      transliteration: "AL-MATEEN",
+      meaning: "The Firm",
+    },
+    {
+      id: 55,
+      slug: "al-waliyy",
+      arabic: "الْوَلِيُّ",
+      transliteration: "AL-WALIYY",
+      meaning: "The Guardian",
+    },
+    {
+      id: 56,
+      slug: "al-hameed",
+      arabic: "الْحَمِيدُ",
+      transliteration: "AL-HAMEED",
+      meaning: "The Praiseworthy",
+    },
+    {
+      id: 57,
+      slug: "al-muhsee",
+      arabic: "الْمُحْصِي",
+      transliteration: "AL-MUHSEE",
+      meaning: "The Counter",
+    },
+    {
+      id: 58,
+      slug: "al-mubdi",
+      arabic: "الْمُبْدِئُ",
+      transliteration: "AL-MUBDI'",
+      meaning: "The Initiator",
+    },
+    {
+      id: 59,
+      slug: "al-mueed",
+      arabic: "الْمُعِيدُ",
+      transliteration: "AL-MU'EED",
+      meaning: "The Restorer",
+    },
+    {
+      id: 60,
+      slug: "al-muhyee",
+      arabic: "الْمُحْيِي",
+      transliteration: "AL-MUHYEE",
+      meaning: "The Giver of Life",
+    },
+    {
+      id: 61,
+      slug: "al-mumeet",
+      arabic: "الْمُمِيتُ",
+      transliteration: "AL-MUMEET",
+      meaning: "The Bringer of Death",
+    },
+    {
+      id: 62,
+      slug: "al-hayy",
+      arabic: "الْحَيُّ",
+      transliteration: "AL-HAYY",
+      meaning: "The Ever-Living",
+    },
+    {
+      id: 63,
+      slug: "al-qayyoom",
+      arabic: "الْقَيُّومُ",
+      transliteration: "AL-QAYYOOM",
+      meaning: "The Self-Subsisting",
+    },
+    {
+      id: 64,
+      slug: "al-waajid",
+      arabic: "الْوَاجِدُ",
+      transliteration: "AL-WAAJID",
+      meaning: "The Finder",
+    },
+    {
+      id: 65,
+      slug: "al-maajid",
+      arabic: "الْمَاجِدُ",
+      transliteration: "AL-MAAJID",
+      meaning: "The Illustrious",
+    },
+    {
+      id: 66,
+      slug: "al-waahid",
+      arabic: "الْواحِدُ",
+      transliteration: "AL-WAAHID",
+      meaning: "The One and Only",
+    },
+    {
+      id: 67,
+      slug: "al-ahad",
+      arabic: "الْأَحَدُ",
+      transliteration: "AL-AHAD",
+      meaning: "The Unique",
+    },
+    {
+      id: 68,
+      slug: "as-samad",
+      arabic: "الصَّمَدُ",
+      transliteration: "AS-SAMAD",
+      meaning: "The Eternal",
+    },
+    {
+      id: 69,
+      slug: "al-qaadir",
+      arabic: "الْقَادِرُ",
+      transliteration: "AL-QAADIR",
+      meaning: "The Able",
+    },
+    {
+      id: 70,
+      slug: "al-muqtadir",
+      arabic: "الْمُقْتَدِرُ",
+      transliteration: "AL-MUQTADIR",
+      meaning: "The Omnipotent",
+    },
+    {
+      id: 71,
+      slug: "al-muqaddim",
+      arabic: "الْمُقَدِّمُ",
+      transliteration: "AL-MUQADDIM",
+      meaning: "The Expediter",
+    },
+    {
+      id: 72,
+      slug: "al-muakhkhir",
+      arabic: "الْمُؤَخِّرُ",
+      transliteration: "AL-MU'AKHKHIR",
+      meaning: "The Delayer",
+    },
+    {
+      id: 73,
+      slug: "al-awwal",
+      arabic: "الْأَوَّلُ",
+      transliteration: "AL-AWWAL",
+      meaning: "The First",
+    },
+    {
+      id: 74,
+      slug: "al-aakhir",
+      arabic: "الْآخِرُ",
+      transliteration: "AL-AAKHIR",
+      meaning: "The Last",
+    },
+    {
+      id: 75,
+      slug: "adh-dhaahir",
+      arabic: "الظَّاهِرُ",
+      transliteration: "ADH-DHAAHIR",
+      meaning: "The Manifest",
+    },
+    {
+      id: 76,
+      slug: "al-baatin",
+      arabic: "الْبَاطِنُ",
+      transliteration: "AL-BAATIN",
+      meaning: "The Hidden",
+    },
+    {
+      id: 77,
+      slug: "al-waali",
+      arabic: "الْوَالِي",
+      transliteration: "AL-WAALI",
+      meaning: "The Governor",
+    },
+    {
+      id: 78,
+      slug: "al-mutaali",
+      arabic: "الْمُتَعَالِي",
+      transliteration: "AL-MUTA'ALI",
+      meaning: "The Supremely Exalted",
+    },
+    {
+      id: 79,
+      slug: "al-barr",
+      arabic: "الْبَرُّ",
+      transliteration: "AL-BARR",
+      meaning: "The Source of All Goodness",
+    },
+    {
+      id: 80,
+      slug: "at-tawwaab",
+      arabic: "التَّوَابُ",
+      transliteration: "AT-TAWWAAB",
+      meaning: "The Acceptor of Repentance",
+    },
+    {
+      id: 81,
+      slug: "al-muntaqim",
+      arabic: "الْمُنْتَقِمُ",
+      transliteration: "AL-MUNTAQIM",
+      meaning: "The Avenger",
+    },
+    {
+      id: 82,
+      slug: "al-afuww",
+      arabic: "الْعَفُوُّ",
+      transliteration: "AL-'AFUWW",
+      meaning: "The Pardoner",
+    },
+    {
+      id: 83,
+      slug: "ar-raoof",
+      arabic: "الرَّؤُوفُ",
+      transliteration: "AR-RA'OOF",
+      meaning: "The Compassionate",
+    },
+    {
+      id: 84,
+      slug: "maalik-ul-mulk",
+      arabic: "مَالِكُ الْمُلْكِ",
+      transliteration: "MAALIK-UL-MULK",
+      meaning: "Owner of The Kingdom",
+    },
     {
       id: 85,
-      slug: "dhul-jalaali-wal-ikraam",
-      arabic: "ذُو ٱلْجَلَالِ وَٱلْإِكْرَام",
-      transliteration: "DHUL-JALAALI WAL-IKRAAM",
-      meaning: "The Lord of Majesty and Generosity",
+      slug: "dhul-jalali-wal-ikraam",
+      arabic: "ذُو الْجَلاَلِ وَالإِكْرَامِ",
+      transliteration: "DHUL-JALALI-WAL-IKRAAM",
+      meaning: "Lord of Majesty and Honour",
+    },
+    {
+      id: 86,
+      slug: "al-muqsit",
+      arabic: "الْمُقْسِطُ",
+      transliteration: "AL-MUQSIT",
+      meaning: "The Equitable",
+    },
+    {
+      id: 87,
+      slug: "al-jaami",
+      arabic: "الْجَامِعُ",
+      transliteration: "AL-JAAMI'",
+      meaning: "The Gatherer",
+    },
+    {
+      id: 88,
+      slug: "al-ghaniyy",
+      arabic: "الْغَنِيُّ",
+      transliteration: "AL-GHANIYY",
+      meaning: "The Rich",
+    },
+    {
+      id: 89,
+      slug: "al-mughni",
+      arabic: "الْمُغْنِي",
+      transliteration: "AL-MUGHNI",
+      meaning: "The Enricher",
+    },
+    {
+      id: 90,
+      slug: "al-mani",
+      arabic: "الْمَانِعُ",
+      transliteration: "AL-MANI'",
+      meaning: "The Preventer",
+    },
+    {
+      id: 91,
+      slug: "ad-daar",
+      arabic: "الضَّارُ",
+      transliteration: "AD-DAAR",
+      meaning: "The One Who Allows Harm",
+    },
+    {
+      id: 92,
+      slug: "an-naafi",
+      arabic: "النَّافِعُ",
+      transliteration: "AN-NAAFI'",
+      meaning: "The Benefactor",
+    },
+    {
+      id: 93,
+      slug: "an-noor",
+      arabic: "النُّورُ",
+      transliteration: "AN-NOOR",
+      meaning: "The Light",
+    },
+    {
+      id: 94,
+      slug: "al-haadi",
+      arabic: "الْهَادِي",
+      transliteration: "AL-HAADI",
+      meaning: "The Guide",
+    },
+    {
+      id: 95,
+      slug: "al-badee",
+      arabic: "الْبَدِيعُ",
+      transliteration: "AL-BADEE'",
+      meaning: "The Incomparable Originator",
+    },
+    {
+      id: 96,
+      slug: "al-baaqi",
+      arabic: "الْبَاقِي",
+      transliteration: "AL-BAAQI",
+      meaning: "The Everlasting",
+    },
+    {
+      id: 97,
+      slug: "al-waarith",
+      arabic: "الْوَارِثُ",
+      transliteration: "AL-WAARITH",
+      meaning: "The Inheritor",
+    },
+    {
+      id: 98,
+      slug: "ar-rasheed",
+      arabic: "الرَّشِيدُ",
+      transliteration: "AR-RASHEED",
+      meaning: "The Guide to the Right Path",
+    },
+    {
+      id: 99,
+      slug: "as-saboor",
+      arabic: "الصَّبُورُ",
+      transliteration: "AS-SABOOR",
+      meaning: "The Patient",
     },
   ],
   uthaymeen: [
     {
       id: 1,
-      slug: "ar-rabb",
-      arabic: "ٱلرَّبّ",
-      transliteration: "AR-RABB",
-      meaning: "The Lord and Sustainer",
+      slug: "al-ahad",
+      arabic: "الْأَحَدُ",
+      transliteration: "AL-AHAD",
+      meaning: "The Unique",
     },
     {
       id: 2,
+      slug: "al-alaa",
+      arabic: "الْأَعْلَى",
+      transliteration: "AL-A'LAA",
+      meaning: "The Most High",
+    },
+    {
+      id: 3,
+      slug: "al-akram",
+      arabic: "الْأَكْرَمُ",
+      transliteration: "AL-AKRAM",
+      meaning: "The Most Generous",
+    },
+    {
+      id: 4,
+      slug: "al-ilaah",
+      arabic: "الْإِلَهُ",
+      transliteration: "AL-ILAAH",
+      meaning: "The Deity",
+    },
+    {
+      id: 5,
+      slug: "al-awwal",
+      arabic: "الْأَوَّلُ",
+      transliteration: "AL-AWWAL",
+      meaning: "The First",
+    },
+    {
+      id: 6,
+      slug: "al-aakhir",
+      arabic: "الْآخِرُ",
+      transliteration: "AL-AAKHIR",
+      meaning: "The Last",
+    },
+    {
+      id: 7,
+      slug: "adh-dhaahir",
+      arabic: "الظَّاهِرُ",
+      transliteration: "ADH-DHAAHIR",
+      meaning: "The Manifest",
+    },
+    {
+      id: 8,
+      slug: "al-baatin",
+      arabic: "الْبَاطِنُ",
+      transliteration: "AL-BAATIN",
+      meaning: "The Hidden",
+    },
+    {
+      id: 9,
+      slug: "al-baari",
+      arabic: "الْبَارِئُ",
+      transliteration: "AL-BAARI'",
+      meaning: "The Producer",
+    },
+    {
+      id: 10,
+      slug: "al-barr",
+      arabic: "الْبَرُّ",
+      transliteration: "AL-BARR",
+      meaning: "The Source of All Goodness",
+    },
+    {
+      id: 11,
+      slug: "al-baseer",
+      arabic: "الْبَصِيرُ",
+      transliteration: "AL-BASEER",
+      meaning: "The All-Seeing",
+    },
+    {
+      id: 12,
+      slug: "at-tawwaab",
+      arabic: "التَّوَابُ",
+      transliteration: "AT-TAWWAAB",
+      meaning: "The Acceptor of Repentance",
+    },
+    {
+      id: 13,
+      slug: "al-jabbaar",
+      arabic: "الْجَبَّارُ",
+      transliteration: "AL-JABBAAR",
+      meaning: "The Compeller",
+    },
+    {
+      id: 14,
+      slug: "al-haafidh",
+      arabic: "الْحَافِظُ",
+      transliteration: "AL-HAAFIDH",
+      meaning: "The Preserver",
+    },
+    {
+      id: 15,
+      slug: "al-haseeb",
+      arabic: "الْحَسِيبُ",
+      transliteration: "AL-HASEEB",
+      meaning: "The Reckoner",
+    },
+    {
+      id: 16,
+      slug: "al-hafeedh",
+      arabic: "الْحَفِيظُ",
+      transliteration: "AL-HAFEEDH",
+      meaning: "The Protector",
+    },
+    {
+      id: 17,
+      slug: "al-hafiyy",
+      arabic: "الْحَفِيُّ",
+      transliteration: "AL-HAFIYY",
+      meaning: "The Benevolent",
+    },
+    {
+      id: 18,
+      slug: "al-haqq",
+      arabic: "الْحَقُّ",
+      transliteration: "AL-HAQQ",
+      meaning: "The Truth",
+    },
+    {
+      id: 19,
+      slug: "al-mubeen",
+      arabic: "الْمُبِينُ",
+      transliteration: "AL-MUBEEN",
+      meaning: "The Clear One",
+    },
+    {
+      id: 20,
+      slug: "al-hakeem",
+      arabic: "الْحَكِيمُ",
+      transliteration: "AL-HAKEEM",
+      meaning: "The Wise",
+    },
+    {
+      id: 21,
+      slug: "al-haleem",
+      arabic: "الْحَلِيمُ",
+      transliteration: "AL-HALEEM",
+      meaning: "The Forbearing",
+    },
+    {
+      id: 22,
+      slug: "al-hameed",
+      arabic: "الْحَمِيدُ",
+      transliteration: "AL-HAMEED",
+      meaning: "The Praiseworthy",
+    },
+    {
+      id: 23,
+      slug: "al-hayy",
+      arabic: "الْحَيُّ",
+      transliteration: "AL-HAYY",
+      meaning: "The Ever-Living",
+    },
+    {
+      id: 24,
+      slug: "al-qayyoom",
+      arabic: "الْقَيُّومُ",
+      transliteration: "AL-QAYYOOM",
+      meaning: "The Self-Subsisting",
+    },
+    {
+      id: 25,
+      slug: "al-khabeer",
+      arabic: "الْخَبِيرُ",
+      transliteration: "AL-KHABEER",
+      meaning: "The All-Aware",
+    },
+    {
+      id: 26,
+      slug: "al-khaaliq",
+      arabic: "الْخَالِقُ",
+      transliteration: "AL-KHAALIQ",
+      meaning: "The Creator of Everything",
+    },
+    {
+      id: 27,
+      slug: "al-khallaaq",
+      arabic: "الْخَلَّاقُ",
+      transliteration: "AL-KHALLAAQ",
+      meaning: "The Continuous Creator",
+    },
+    {
+      id: 28,
+      slug: "ar-raoof",
+      arabic: "الرَّؤُوفُ",
+      transliteration: "AR-RA'OOF",
+      meaning: "The Compassionate",
+    },
+    {
+      id: 29,
+      slug: "ar-rahmaan",
+      arabic: "الرَّحْمَـٰنُ",
+      transliteration: "AR-RAHMAAN",
+      meaning: "The Most Gracious",
+    },
+    {
+      id: 30,
+      slug: "ar-raheem",
+      arabic: "الرَّحِيمُ",
+      transliteration: "AR-RAHEEM",
+      meaning: "The Most Merciful",
+    },
+    {
+      id: 31,
+      slug: "ar-razzaaq",
+      arabic: "الرَّزَّاقُ",
+      transliteration: "AR-RAZZAAQ",
+      meaning: "The Provider",
+    },
+    {
+      id: 32,
+      slug: "ar-raqeeb",
+      arabic: "الرَّقِيبُ",
+      transliteration: "AR-RAQEEB",
+      meaning: "The Watchful",
+    },
+    {
+      id: 33,
+      slug: "as-salaam",
+      arabic: "السَّلاَمُ",
+      transliteration: "AS-SALAAM",
+      meaning: "The Giver of Peace",
+    },
+    {
+      id: 34,
+      slug: "as-samee",
+      arabic: "السَّمِيعُ",
+      transliteration: "AS-SAMEE'",
+      meaning: "The All-Hearing",
+    },
+    {
+      id: 35,
+      slug: "ash-shaakir",
+      arabic: "الشَّاكِرُ",
+      transliteration: "ASH-SHAAKIR",
+      meaning: "The Appreciative",
+    },
+    {
+      id: 36,
+      slug: "ash-shakoor",
+      arabic: "الشَّكُورُ",
+      transliteration: "ASH-SHAKOOR",
+      meaning: "The Grateful",
+    },
+    {
+      id: 37,
+      slug: "ash-shaheed",
+      arabic: "الشَّهِيدُ",
+      transliteration: "ASH-SHAHEED",
+      meaning: "The Witness",
+    },
+    {
+      id: 38,
+      slug: "as-samad",
+      arabic: "الصَّمَدُ",
+      transliteration: "AS-SAMAD",
+      meaning: "The Eternal",
+    },
+    {
+      id: 39,
+      slug: "al-aalim",
+      arabic: "الْعَالِمُ",
+      transliteration: "AL-AALIM",
+      meaning: "The Knower Of The Seen And Unseen",
+    },
+    {
+      id: 40,
+      slug: "al-afuww",
+      arabic: "الْعَفُوُّ",
+      transliteration: "AL-'AFUWW",
+      meaning: "The Pardoner",
+    },
+    {
+      id: 41,
+      slug: "al-adheem",
+      arabic: "الْعَظِيمُ",
+      transliteration: "AL-'ADHEEM",
+      meaning: "The Magnificent",
+    },
+    {
+      id: 42,
+      slug: "al-azeez",
+      arabic: "الْعَزِيزُ",
+      transliteration: "AL-'AZEEZ",
+      meaning: "The All Mighty",
+    },
+    {
+      id: 43,
+      slug: "al-ghaffaar",
+      arabic: "الْغَفَّارُ",
+      transliteration: "AL-GHAFFAAR",
+      meaning: "The Oft-Forgiving",
+    },
+    {
+      id: 44,
+      slug: "al-aleem",
+      arabic: "الْعَلِيمُ",
+      transliteration: "AL-'ALEEM",
+      meaning: "The All Knowing",
+    },
+    {
+      id: 45,
+      slug: "al-alee",
+      arabic: "الْعَلِيُّ",
+      transliteration: "AL-'ALEE",
+      meaning: "The Exalted",
+    },
+    {
+      id: 46,
+      slug: "al-ghafoor",
+      arabic: "الْغَفُورُ",
+      transliteration: "AL-GHAFOOR",
+      meaning: "The All Forgiving",
+    },
+    {
+      id: 47,
+      slug: "al-fattaah",
+      arabic: "الْفَتَّاحُ",
+      transliteration: "AL-FATTAAH",
+      meaning: "The Opener",
+    },
+    {
+      id: 48,
+      slug: "al-ghaniyy",
+      arabic: "الْغَنِيُّ",
+      transliteration: "AL-GHANIYY",
+      meaning: "The Rich",
+    },
+    {
+      id: 49,
+      slug: "al-qaadir",
+      arabic: "الْقَادِرُ",
+      transliteration: "AL-QAADIR",
+      meaning: "The Able",
+    },
+    {
+      id: 50,
+      slug: "al-qaahir",
+      arabic: "الْقَاهِرُ",
+      transliteration: "AL-QAAHIR",
+      meaning: "The Subduer",
+    },
+    {
+      id: 51,
+      slug: "al-quddoos",
+      arabic: "الْقُدُّوسُ",
+      transliteration: "AL-QUDDOOS",
+      meaning: "The Holy",
+    },
+    {
+      id: 52,
+      slug: "al-qadeer",
+      arabic: "الْقَدِيرُ",
+      transliteration: "AL-QADEER",
+      meaning: "The All-Powerful",
+    },
+    {
+      id: 53,
+      slug: "al-qareeb",
+      arabic: "الْقَرِيبُ",
+      transliteration: "AL-QAREEB",
+      meaning: "The One Who Is Near",
+    },
+    {
+      id: 54,
+      slug: "al-qawiyy",
+      arabic: "الْقَوِيُّ",
+      transliteration: "AL-QAWIYY",
+      meaning: "The Strong",
+    },
+    {
+      id: 55,
+      slug: "al-lateef",
+      arabic: "الْلَّطِيفُ",
+      transliteration: "AL-LATEEF",
+      meaning: "The Gentle",
+    },
+    {
+      id: 56,
+      slug: "al-mumin",
+      arabic: "الْمُؤْمِنُ",
+      transliteration: "AL-MU'MIN",
+      meaning: "The Granter of Faith",
+    },
+    {
+      id: 57,
+      slug: "al-mutaali",
+      arabic: "الْمُتَعَالِي",
+      transliteration: "AL-MUTA'ALI",
+      meaning: "The Supremely Exalted",
+    },
+    {
+      id: 58,
+      slug: "al-mutakabbir",
+      arabic: "الْمُتَكَبِّرُ",
+      transliteration: "AL-MUTAKABBIR",
+      meaning: "The Supreme",
+    },
+    {
+      id: 59,
+      slug: "al-mateen",
+      arabic: "الْمَتِينُ",
+      transliteration: "AL-MATEEN",
+      meaning: "The Firm",
+    },
+    {
+      id: 60,
+      slug: "al-mujeeb",
+      arabic: "الْمُجِيبُ",
+      transliteration: "AL-MUJEEB",
+      meaning: "The Responsive",
+    },
+    {
+      id: 61,
+      slug: "al-majeed",
+      arabic: "الْمَجِيدُ",
+      transliteration: "AL-MAJEED",
+      meaning: "The Glorious",
+    },
+    {
+      id: 62,
+      slug: "al-muheet",
+      arabic: "الْمُحِيطُ",
+      transliteration: "AL-MUHEET",
+      meaning: "The All-Encompassing",
+    },
+    {
+      id: 63,
+      slug: "al-musawwir",
+      arabic: "الْمُصَوِّرُ",
+      transliteration: "AL-MUSAWWIR",
+      meaning: "The Fashioner",
+    },
+    {
+      id: 64,
+      slug: "al-muqtadir",
+      arabic: "الْمُقْتَدِرُ",
+      transliteration: "AL-MUQTADIR",
+      meaning: "The Omnipotent",
+    },
+    {
+      id: 65,
+      slug: "al-muqeet",
+      arabic: "الْمُقِيتُ",
+      transliteration: "AL-MUQEET",
+      meaning: "The Sustainer",
+    },
+    {
+      id: 66,
+      slug: "al-malik",
+      arabic: "الْمَلِكُ",
+      transliteration: "AL-MALIK",
+      meaning: "The King",
+    },
+    {
+      id: 67,
+      slug: "al-maleek",
+      arabic: "الْمَلِيكُ",
+      transliteration: "AL-MALEEK",
+      meaning: "The Sovereign",
+    },
+    {
+      id: 68,
+      slug: "al-mawlaa",
+      arabic: "الْمَوْلَى",
+      transliteration: "AL-MAWLAA",
+      meaning: "The Patron",
+    },
+    {
+      id: 69,
+      slug: "al-muhaymin",
+      arabic: "الْمُهَيْمِنُ",
+      transliteration: "AL-MUHAYMIN",
+      meaning: "The Overseer",
+    },
+    {
+      id: 70,
+      slug: "an-naseer",
+      arabic: "النَّصِيرُ",
+      transliteration: "AN-NASEER",
+      meaning: "The Helper",
+    },
+    {
+      id: 71,
+      slug: "al-waahid",
+      arabic: "الْواحِدُ",
+      transliteration: "AL-WAAHID",
+      meaning: "The One and Only",
+    },
+    {
+      id: 72,
+      slug: "al-waarith",
+      arabic: "الْوَارِثُ",
+      transliteration: "AL-WAARITH",
+      meaning: "The Inheritor",
+    },
+    {
+      id: 73,
+      slug: "al-waasi",
+      arabic: "الْوَاسِعُ",
+      transliteration: "AL-WAASI'",
+      meaning: "The Boundless",
+    },
+    {
+      id: 74,
+      slug: "al-wadood",
+      arabic: "الْوَدُودُ",
+      transliteration: "AL-WADOOD",
+      meaning: "The Loving",
+    },
+    {
+      id: 75,
+      slug: "al-wakeel",
+      arabic: "الْوَكِيلُ",
+      transliteration: "AL-WAKEEL",
+      meaning: "The Disposer of Affairs",
+    },
+    {
+      id: 76,
+      slug: "al-waliyy",
+      arabic: "الْوَلِيُّ",
+      transliteration: "AL-WALIYY",
+      meaning: "The Guardian",
+    },
+    {
+      id: 77,
+      slug: "al-wahhaab",
+      arabic: "الْوَهَّابُ",
+      transliteration: "AL-WAHHAAB",
+      meaning: "The Bestower",
+    },
+    {
+      id: 78,
       slug: "al-jameel",
-      arabic: "ٱلْجَمِيل",
+      arabic: "الْجَمِيلُ",
       transliteration: "AL-JAMEEL",
       meaning: "The Beautiful",
     },
     {
-      id: 3,
+      id: 79,
+      slug: "al-jawaad",
+      arabic: "الْجَوَادُ",
+      transliteration: "AL-JAWAAD",
+      meaning: "The Generous",
+    },
+    {
+      id: 80,
+      slug: "al-hakam",
+      arabic: "الْحَكَمُ",
+      transliteration: "AL-HAKAM",
+      meaning: "The Judge",
+    },
+    {
+      id: 81,
+      slug: "al-hayyiyu",
+      arabic: "الْحَيِيُّ",
+      transliteration: "AL-HAYYIYU",
+      meaning: "The Honourably Modest",
+    },
+    {
+      id: 82,
+      slug: "ar-rabb",
+      arabic: "الرَّبُّ",
+      transliteration: "AR-RABB",
+      meaning: "The Lord",
+    },
+    {
+      id: 83,
+      slug: "ar-rafeeq",
+      arabic: "الرَّفِيقُ",
+      transliteration: "AR-RAFEEQ",
+      meaning: "The Kind",
+    },
+    {
+      id: 84,
+      slug: "as-subbooh",
+      arabic: "السُّبُّوحُ",
+      transliteration: "AS-SUBBOOH",
+      meaning: "The Perfect",
+    },
+    {
+      id: 85,
       slug: "as-sayyid",
-      arabic: "ٱلسَّيِّد",
+      arabic: "السَّيِّدُ",
       transliteration: "AS-SAYYID",
       meaning: "The Master",
+    },
+    {
+      id: 86,
+      slug: "ash-shafee",
+      arabic: "الشَّافِي",
+      transliteration: "ASH-SHAFEE",
+      meaning: "The Healer",
+    },
+    {
+      id: 87,
+      slug: "at-tayyib",
+      arabic: "الطَّيِّبُ",
+      transliteration: "AT-TAYYIB",
+      meaning: "The Pure",
+    },
+    {
+      id: 88,
+      slug: "al-qahhaar",
+      arabic: "الْقَهَّارُ",
+      transliteration: "AL-QAHHAAR",
+      meaning: "The Conqueror",
+    },
+    {
+      id: 89,
+      slug: "al-kabeer",
+      arabic: "الْكَبِيرُ",
+      transliteration: "AL-KABEER",
+      meaning: "The Most Great",
+    },
+    {
+      id: 90,
+      slug: "al-kareem",
+      arabic: "الْكَرِيمُ",
+      transliteration: "AL-KAREEM",
+      meaning: "The Noble",
+    },
+    {
+      id: 91,
+      slug: "al-qaabid",
+      arabic: "الْقَابِضُ",
+      transliteration: "AL-QAABID",
+      meaning: "The Withholder",
+    },
+    {
+      id: 92,
+      slug: "al-baasit",
+      arabic: "الْبَاسِطُ",
+      transliteration: "AL-BAASIT",
+      meaning: "The Extender",
+    },
+    {
+      id: 93,
+      slug: "al-muqaddim",
+      arabic: "الْمُقَدِّمُ",
+      transliteration: "AL-MUQADDIM",
+      meaning: "The Expediter",
+    },
+    {
+      id: 94,
+      slug: "al-muakhkhir",
+      arabic: "الْمُؤَخِّرُ",
+      transliteration: "AL-MU'AKHKHIR",
+      meaning: "The Delayer",
+    },
+    {
+      id: 95,
+      slug: "al-muhsin",
+      arabic: "الْمُحْسِنُ",
+      transliteration: "AL-MUHSIN",
+      meaning: "The Doer Of Good",
+    },
+    {
+      id: 96,
+      slug: "al-mutee",
+      arabic: "الْمُعْطِي",
+      transliteration: "AL-MU'TEE",
+      meaning: "The Giver",
+    },
+    {
+      id: 97,
+      slug: "al-mannaan",
+      arabic: "الْمَنَّانُ",
+      transliteration: "AL-MANNAAN",
+      meaning: "The Bestower of Favours",
+    },
+    {
+      id: 98,
+      slug: "al-witr",
+      arabic: "الْوِتْرُ",
+      transliteration: "AL-WITR",
+      meaning: "The One with No Equal",
     },
   ],
 };

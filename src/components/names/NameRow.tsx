@@ -38,13 +38,16 @@ const NameRow = ({ name }: NameRowProps) => {
 
       {/* min-w-0 on every cell and break-words on every string: a long Name
           wraps and grows the row taller, it never widens the table. */}
+      {/* Right-aligned from `sm`, where the Arabic has its own column and the
+          RTL text should settle against its own reading edge. Stays left in
+          the mobile stack, where it sits inside a left-aligned block. */}
       <div
-        className={`flex min-w-0 items-center px-3 sm:px-4 pt-3 pb-1 sm:py-3 ${DIVIDER}`}
+        className={`flex min-w-0 items-center sm:justify-end px-3 sm:px-4 pt-3 pb-1 sm:py-3 ${DIVIDER}`}
       >
         <span
           dir="rtl"
           lang="ar"
-          className="min-w-0 text-xl leading-relaxed text-foreground break-words"
+          className="min-w-0 text-xl leading-relaxed text-foreground break-words sm:text-right"
         >
           {name.arabic}
         </span>
