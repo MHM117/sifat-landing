@@ -3,7 +3,8 @@
 ## Current state
 - **`/names` "Explore the Names" page is complete and unpushed.** Full content in: 99 Tirmidhi, 98 Ibn al-Uthaymeen, 128 unique Names across both. Build and lint pass.
 - `src/data/names.ts` is **generated**. Source of truth is `names_tirmidhi.md` and `names_ibn_uthaymeen.md` at the repo root. Regenerate with `node scripts/generate-names.mjs`. Never hand-edit the arrays.
-- Android waitlist shipped to main (`89716592`). Still outstanding: confirm Resend DNS verified on Namecheap, then test the live submit end to end on sifat.app.
+- **Android waitlist is committed but NOT deployed.** `89716592` has been sitting on local main unpushed since June; `origin/main` was still at `fcb471e2`. It is not live on sifat.app, and the blocker was never the Resend DNS. Pushing deploys it for the first time.
+- Still outstanding for the waitlist once pushed: confirm Resend DNS is verified on Namecheap, then test the live submit end to end. Note the confirmation email is best-effort in `api/waitlist.ts`, so signups will still succeed even if DNS is not ready.
 
 ## 2026-07-29/30 — Explore the Names page
 
