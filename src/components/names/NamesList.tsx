@@ -7,10 +7,9 @@ import {
   COMPILATIONS,
   DEFAULT_COMPILATION,
   NAMES,
-  matchesQuery,
-  tokensFor,
   type Compilation,
 } from "@/data/names";
+import { indexName, searchNames } from "@/lib/name-search";
 
 const NamesList = () => {
   const [compilation, setCompilation] = useState<Compilation>(DEFAULT_COMPILATION);
@@ -18,13 +17,13 @@ const NamesList = () => {
 
   const names = NAMES[compilation];
 
-  // Tokenised once per compilation, so typing never re-folds 99 rows.
-  const tokens = useMemo(() => names.map(tokensFor), [names]);
+  // Built once per compilation, so typing never re-folds 99 rows.
+  const indexes = useMemo(() => names.map(indexName), [names]);
 
-  const filtered = useMemo(() => {
-    if (!query.trim()) return names;
-    return names.filter((_, i) => matchesQuery(tokens[i], query));
-  }, [names, tokens, query]);
+  const filtered = useMemo(
+    () => searchNames(names, indexes, query),
+    [names, indexes, query]
+  );
 
   const handleCompilationChange = (value: string) => {
     // A single-type ToggleGroup clears its value when the active item is
