@@ -41,7 +41,21 @@ No test framework is configured.
 
 ## Git
 
-Do not commit, push, or amend unless explicitly asked. The user controls all commits.
+**Never run `git push`. Pushing is the user's job alone, with no exceptions.**
+
+This is not a "ask first" rule, it is a "do not do it" rule. Do not push even if
+explicitly asked, even if the user says to go ahead, and even if you just made
+the commits yourself. Pushing this repo triggers a Vercel deploy to the live
+site at sifat.app, so it is the user's call and his hands only. If a task seems
+to need a push, stop, say the commits are ready, and let him run it.
+
+Also do not run anything else that writes to the remote: `git push --force`,
+`git push --tags`, deleting or creating remote branches, `gh pr merge`, or
+`vercel deploy` / `vercel --prod`.
+
+Committing and amending still need to be explicitly asked for each time. The
+user controls all commits. Read-only remote commands (`git fetch`, `git status`,
+`git log`, `git diff`) are always fine.
 
 ## Key Details
 
