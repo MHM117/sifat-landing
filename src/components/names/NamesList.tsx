@@ -26,9 +26,6 @@ const NamesList = () => {
     return names.filter((_, i) => matchesQuery(tokens[i], query));
   }, [names, tokens, query]);
 
-  const activeLabel =
-    COMPILATIONS.find((c) => c.value === compilation)?.label ?? "";
-
   const handleCompilationChange = (value: string) => {
     // A single-type ToggleGroup clears its value when the active item is
     // clicked again. Ignoring the empty value keeps a list on screen.
@@ -83,12 +80,13 @@ const NamesList = () => {
         </div>
       </div>
 
-      {/* Result count */}
-      <p className="text-sm text-muted-foreground mb-3">
-        {filtered.length === names.length
-          ? `${names.length} Names, compiled by ${activeLabel}`
-          : `${filtered.length} of ${names.length} Names`}
-      </p>
+      {/* Count appears only while filtering. With no search term the table
+          speaks for itself and a standing subtitle is just noise. */}
+      {filtered.length !== names.length && (
+        <p className="text-sm text-muted-foreground mb-3">
+          {filtered.length} of {names.length} Names
+        </p>
+      )}
 
       {/* List */}
       <div className="bg-card rounded-xl border border-border overflow-hidden">
@@ -118,11 +116,7 @@ const NamesList = () => {
           ))
         ) : (
           <div className="px-6 py-16 text-center">
-            <p className="text-foreground font-medium mb-1">No Names found</p>
-            <p className="text-muted-foreground text-sm">
-              Nothing in the {activeLabel} list matches "{query.trim()}". Try a
-              different spelling, or search by meaning instead.
-            </p>
+            <p className="text-foreground font-medium">No Names found</p>
           </div>
         )}
       </div>

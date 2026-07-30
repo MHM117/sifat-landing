@@ -59,9 +59,9 @@ cherry-pick`, `git checkout -b` and `git tag` are all the user's to run. He
 wants sole control of the repo's history, not just its remote.
 
 Leave finished work as uncommitted changes in the working tree and say what
-changed and why. If a commit message would help, write it out as text he can
-copy. Do not stage, do not commit, do not offer to. He will say so explicitly
-if he ever wants that changed for a specific task.
+changed and why. Do not stage, do not commit, do not offer to, and **do not
+write commit messages for him** — he writes his own. He will say so explicitly
+if he ever wants any of that changed for a specific task.
 
 Read-only commands are always fine and encouraged for diagnosis: `git status`,
 `git log`, `git diff`, `git show`, `git fetch`, `git ls-files`, `git blame`.
