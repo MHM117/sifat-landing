@@ -53,9 +53,18 @@ Also do not run anything else that writes to the remote: `git push --force`,
 `git push --tags`, deleting or creating remote branches, `gh pr merge`, or
 `vercel deploy` / `vercel --prod`.
 
-Committing and amending still need to be explicitly asked for each time. The
-user controls all commits. Read-only remote commands (`git fetch`, `git status`,
-`git log`, `git diff`) are always fine.
+**Do not commit either.** `git commit`, `git add`, `git rm`, `git restore
+--staged`, `git reset`, `git stash`, `git merge`, `git rebase`, `git
+cherry-pick`, `git checkout -b` and `git tag` are all the user's to run. He
+wants sole control of the repo's history, not just its remote.
+
+Leave finished work as uncommitted changes in the working tree and say what
+changed and why. If a commit message would help, write it out as text he can
+copy. Do not stage, do not commit, do not offer to. He will say so explicitly
+if he ever wants that changed for a specific task.
+
+Read-only commands are always fine and encouraged for diagnosis: `git status`,
+`git log`, `git diff`, `git show`, `git fetch`, `git ls-files`, `git blame`.
 
 ## Key Details
 
