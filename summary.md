@@ -4,7 +4,9 @@
 - **`/names` "Explore the Names" page is complete and unpushed.** Full content in: 99 Tirmidhi, 98 Ibn al-Uthaymeen, 128 unique Names across both. Build and lint pass.
 - `src/data/names.ts` is **generated**. Source of truth is `names_tirmidhi.md` and `names_ibn_uthaymeen.md` at the repo root. Regenerate with `node scripts/generate-names.mjs`. Never hand-edit the arrays.
 - **Android waitlist is committed but NOT deployed.** `89716592` has been sitting on local main unpushed since June; `origin/main` was still at `fcb471e2`. It is not live on sifat.app, and the blocker was never the Resend DNS. Pushing deploys it for the first time.
-- Still outstanding for the waitlist once pushed: confirm Resend DNS is verified on Namecheap, then test the live submit end to end. Note the confirmation email is best-effort in `api/waitlist.ts`, so signups will still succeed even if DNS is not ready.
+- **Resend DNS is done.** Verified 2026-07-30 by querying public DNS: the DKIM key at `resend._domainkey.sifat.app` and the SPF record on `send.sifat.app` are both live. Hussain completed this back in June; the old "in progress" note here was simply never updated. Do not re-raise it as a blocker. Resend verification depends on the Resend account plus Namecheap DNS only, so it is unaffected by deploys and does not expire.
+- Only genuinely untested thing: `api/waitlist.ts` has never run in production, since the code was never deployed. Worth one real submit after the first push.
+- Minor, low stakes: `send.sifat.app` has no MX record. Resend asks for one for bounce handling. Sending works on DKIM plus SPF, so this only affects bounce reporting.
 
 ## 2026-07-29/30 — Explore the Names page
 
