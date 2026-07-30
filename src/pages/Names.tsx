@@ -19,7 +19,7 @@ const Names = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  const sectionRef = useScrollReveal<HTMLElement>();
+  const introRef = useScrollReveal<HTMLDivElement>();
   const ctaRef = useScrollReveal<HTMLElement>();
 
   return (
@@ -27,9 +27,12 @@ const Names = () => {
       <Header />
 
       <main className="pt-16">
-        <section ref={sectionRef} className="reveal-fade-up py-24">
+        {/* The reveal wraps only the intro, never the table. The table is the
+            page's whole point, so it must not depend on an observer firing to
+            be visible, and at 99 rows it is far too tall to reveal reliably. */}
+        <section className="py-24">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12">
+            <div ref={introRef} className="reveal-fade-up text-center mb-12">
               <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-6">
                 Names of Allah
               </h1>

@@ -15,6 +15,15 @@ export function useScrollReveal<T extends HTMLElement>(
       return;
     }
 
+    // A ratio threshold is unreachable for anything taller than the viewport.
+    // IntersectionObserver measures visible area as a fraction of the whole
+    // element, so a 6000px section in an 800px window peaks at 13% visibility
+    // and a 15% threshold never fires, leaving it stuck at opacity 0 forever.
+    // Clamp to a ratio this element can actually hit.
+    const height = el.getBoundingClientRect().height;
+    const reachable = height > 0 ? window.innerHeight / height : 1;
+    const effectiveThreshold = Math.min(threshold, reachable * 0.5);
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -22,7 +31,7 @@ export function useScrollReveal<T extends HTMLElement>(
           observer.unobserve(el);
         }
       },
-      { threshold }
+      { threshold: effectiveThreshold }
     );
 
     observer.observe(el);
