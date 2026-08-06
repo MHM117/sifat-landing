@@ -28,29 +28,31 @@ const Hero = () => {
   const [active, setActive] = useState(0);
   const [isDark, setIsDark] = useState(false);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const autoFlipRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const autoFlipEnabled = useRef(true);
+
+  const advance = () => {
+    setActive((i) => {
+      const next = (i + 1) % SLIDE_COUNT;
+      if (next === 0 && autoFlipEnabled.current) {
+        setIsDark((d) => !d);
+      }
+      return next;
+    });
+  };
 
   const resetTimer = () => {
     if (timerRef.current) clearInterval(timerRef.current);
-    timerRef.current = setInterval(() => setActive((i) => (i + 1) % SLIDE_COUNT), INTERVAL);
+    timerRef.current = setInterval(advance, INTERVAL);
   };
 
   useEffect(() => {
     resetTimer();
-    autoFlipRef.current = setTimeout(() => setIsDark(true), SLIDE_COUNT * INTERVAL);
-    return () => {
-      if (timerRef.current) clearInterval(timerRef.current);
-      if (autoFlipRef.current) clearTimeout(autoFlipRef.current);
-    };
+    return () => { if (timerRef.current) clearInterval(timerRef.current); };
   }, []);
 
   const toggleTheme = () => {
     setIsDark((d) => !d);
-    if (autoFlipRef.current) {
-      clearTimeout(autoFlipRef.current);
-      autoFlipRef.current = null;
-    }
-    resetTimer();
+    autoFlipEnabled.current = false;
   };
 
   return (
@@ -107,7 +109,7 @@ const Hero = () => {
               </button>
               <div
                 className="animate-float-fade-in relative w-72 h-[580px] lg:w-80 lg:h-[650px] xl:w-[22rem] xl:h-[720px] cursor-pointer"
-                onClick={() => { setActive((i) => (i + 1) % SLIDE_COUNT); resetTimer(); }}
+                onClick={() => { advance(); resetTimer(); }}
               >
                 {slides.map((slide, i) => (
                   <>
@@ -142,7 +144,15 @@ const Hero = () => {
               {slides.map((_, i) => (
                 <button
                   key={i}
-                  onClick={() => { setActive(i); resetTimer(); }}
+                  onClick={() => {
+                    setActive((prev) => {
+                      if (i === 0 && prev === SLIDE_COUNT - 1 && autoFlipEnabled.current) {
+                        setIsDark((d) => !d);
+                      }
+                      return i;
+                    });
+                    resetTimer();
+                  }}
                   className={`w-2 h-2 rounded-full transition-all duration-300 ${
                     i === active ? "bg-primary w-6" : "bg-muted-foreground/30"
                   }`}
