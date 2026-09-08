@@ -9,8 +9,10 @@ interface StoreBadgesProps {
 const StoreBadges = ({ className }: StoreBadgesProps) => {
   return (
     <div className={cn("flex flex-col sm:flex-row gap-3 items-center", className)}>
-      <a 
-        href="#" 
+      <a
+        href="https://apps.apple.com/us/app/sifat-learn-names-of-allah/id6758858851"
+        target="_blank"
+        rel="noopener noreferrer"
         className="h-12 w-[160px] flex items-center justify-center hover:opacity-80 transition-opacity"
       >
         <img 
@@ -19,8 +21,10 @@ const StoreBadges = ({ className }: StoreBadgesProps) => {
           className="h-full w-full object-contain" 
         />
       </a>
-      <a 
-        href="#" 
+      <a
+        href="https://play.google.com/store/apps/details?id=app.sifat.android"
+        target="_blank"
+        rel="noopener noreferrer"
         className="h-12 w-[160px] flex items-center justify-center hover:opacity-80 transition-opacity overflow-hidden"
       >
         <img 

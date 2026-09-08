@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { Sun, Moon } from "lucide-react";
 import appStoreBadge from "@/assets/app-store-badge.svg";
-import AndroidWaitlistButton from "@/components/landing/AndroidWaitlistButton";
+import googlePlayBadge from "@/assets/google-play-badge.png";
+// import AndroidWaitlistButton from "@/components/landing/AndroidWaitlistButton";
 import homeMockup from "@/assets/home_mockup.png";
 import homeMockupDark from "@/assets/home_mockup_dark.png";
 import flashcardMockup from "@/assets/flashcard_mockup.png";
@@ -92,7 +93,19 @@ const Hero = () => {
                   className="h-full w-full object-contain"
                 />
               </a>
-              <AndroidWaitlistButton />
+              {/* <AndroidWaitlistButton /> */}
+              <a
+                href="https://play.google.com/store/apps/details?id=app.sifat.android"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="h-12 w-[160px] flex items-center justify-center hover:opacity-80 transition-opacity overflow-hidden"
+              >
+                <img
+                  src={googlePlayBadge}
+                  alt="Get it on Google Play"
+                  className="h-full w-full object-contain transform-gpu scale-[1.4]"
+                />
+              </a>
             </div>
           </div>
 
