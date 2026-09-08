@@ -80,6 +80,10 @@ const Hero = () => {
               Build deep understanding through daily flashcards that adapt to you. Hear proper pronunciation, challenge yourself with quizzes, and use the Names confidently in your dua.
             </p>
 
+            <p className="animate-fade-up-delay-3 text-lg sm:text-xl font-semibold text-foreground text-center lg:text-left mb-4">
+              Trusted by <span className="text-primary">Hundreds of Muslims</span> worldwide
+            </p>
+
             <div className="animate-fade-up-delay-3 flex flex-col sm:flex-row items-center lg:items-start sm:justify-center lg:justify-start gap-3">
               <a
                 href="https://apps.apple.com/us/app/sifat-learn-names-of-allah/id6758858851"
