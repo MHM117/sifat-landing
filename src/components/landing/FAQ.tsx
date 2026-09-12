@@ -52,9 +52,6 @@ const FAQ = () => {
     <section ref={sectionRef} id="faq" className="reveal-fade-up py-24">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <span className="inline-block px-4 py-1.5 bg-primary/10 text-primary rounded-full text-sm font-medium mb-4">
-            FAQ
-          </span>
           <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
             Frequently Asked Questions
           </h2>

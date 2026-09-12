@@ -35,9 +35,6 @@ const StepsToValue = () => {
     <section ref={sectionRef} className="reveal-fade-up py-24 bg-muted/50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <span className="inline-block px-4 py-1.5 bg-primary/10 text-primary rounded-full text-sm font-medium mb-4">
-            Getting Started
-          </span>
           <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
             Start Learning in Minutes
           </h2>
