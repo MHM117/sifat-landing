@@ -17,7 +17,12 @@
 - `src/components/landing/StoreBadges.tsx` — reusable badge pair (not currently used on any page but now has real links).
 - `src/components/landing/AndroidWaitlistButton.tsx` + `WaitlistDialog.tsx` — preserved, no longer imported.
 
+## Current session (2026-09-12)
+- **Reviews strip added.** New `Reviews.tsx` component sits between Hero and Hadith — compact strip (py-12, no heading) with 3 review cards showing star rating, quote, and author name. Placeholder content for now; user will supply real reviews.
+
 ## Open, next time
+- **Reviews: real content pending.** User will provide actual App Store review text to replace placeholders.
+- **Reviews: carousel upgrade.** When more reviews accumulate, convert the 3-card grid into a sliding carousel. Current static grid is fine for 3.
 - Toggle position needs fine-tuning on mobile viewports.
 - Image file sizes are large (~5.8 MB total for 10 mockups) — WebP conversion or lazy loading worth considering.
 - Column widths in `/names` table grid still untuned.

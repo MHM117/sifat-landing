@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import Header from "@/components/landing/Header";
 import Hero from "@/components/landing/Hero";
+import Reviews from "@/components/landing/Reviews";
 import Hadith from "@/components/landing/Hadith";
 import HowItWorks from "@/components/landing/HowItWorks";
 import StepsToValue from "@/components/landing/StepsToValue";
@@ -29,6 +30,7 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <Header />
       <Hero />
+      <Reviews />
       <Hadith />
       <HowItWorks />
       <StepsToValue />
