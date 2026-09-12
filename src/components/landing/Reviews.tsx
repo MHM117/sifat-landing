@@ -40,7 +40,7 @@ const Reviews = () => {
   const sectionRef = useScrollReveal<HTMLElement>();
 
   return (
-    <section ref={sectionRef} className="reveal-fade-up py-12">
+    <section ref={sectionRef} className="reveal-fade-up py-12 border-t border-border">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid md:grid-cols-3 gap-4 max-w-5xl mx-auto">
           {reviews.map((review, index) => (
@@ -50,14 +50,14 @@ const Reviews = () => {
             >
               <Stars count={review.rating} />
               {review.title && (
-                <p className="text-sm font-bold text-foreground mb-1">
+                <p className="text-base font-bold text-foreground mb-1">
                   {review.title}
                 </p>
               )}
-              <p className="text-sm text-foreground leading-relaxed mb-3">
+              <p className="text-base text-foreground leading-relaxed mb-3">
                 "{review.text}"
               </p>
-              <p className="text-xs text-muted-foreground font-medium">
+              <p className="text-sm text-muted-foreground font-medium">
                 {review.author}
               </p>
             </div>

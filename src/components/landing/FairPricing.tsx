@@ -5,7 +5,7 @@ const FairPricing = () => {
   const sectionRef = useScrollReveal<HTMLElement>();
 
   return (
-    <section ref={sectionRef} className="reveal-fade-up py-24 bg-background">
+    <section ref={sectionRef} className="reveal-fade-up py-24 bg-muted/50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <span className="inline-block px-4 py-1.5 bg-primary/10 text-primary rounded-full text-sm font-medium mb-4">
