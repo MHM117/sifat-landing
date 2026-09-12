@@ -19,7 +19,7 @@ const Privacy = () => {
 
         <div className="prose prose-gray max-w-none">
           <p className="text-muted-foreground mb-6">
-            Last updated: June 2026
+            Last updated: September 2026
           </p>
 
           <section className="mb-8">
@@ -46,7 +46,7 @@ const Privacy = () => {
 
             <h3 className="text-lg font-medium text-foreground mb-2">Usage Data:</h3>
             <ul className="list-disc pl-6 text-muted-foreground space-y-2 mb-4">
-              <li>Learning progress and quiz scores</li>
+              <li>Learning progress, quiz scores, leaderboard scores, and streaks</li>
               <li>App usage patterns and preferences</li>
               <li>Device information (device type, operating system)</li>
               <li>Analytics data (app opens, feature usage, session duration)</li>
@@ -71,7 +71,7 @@ const Privacy = () => {
             <ul className="list-disc pl-6 text-muted-foreground space-y-2 mb-4">
               <li>Create and maintain your account (GDPR Art. 6b - contract fulfillment)</li>
               <li>Sync your learning progress across devices (GDPR Art. 6b - contract fulfillment)</li>
-              <li>Process your one-time purchase and manage payments (GDPR Art. 6b - contract fulfillment)</li>
+              <li>Provide free and premium features, process purchases (GDPR Art. 6b - contract fulfillment)</li>
               <li>Personalize your learning experience (GDPR Art. 6f - legitimate interest)</li>
               <li>Analyze and improve app performance (GDPR Art. 6f - legitimate interest)</li>
               <li>Send push notifications about your learning progress (GDPR Art. 6a - consent)</li>
@@ -92,6 +92,7 @@ const Privacy = () => {
               <li><strong>Supabase:</strong> Data storage and authentication</li>
               <li><strong>Firebase:</strong> Analytics and crash reporting</li>
               <li><strong>RevenueCat:</strong> Purchase management</li>
+              <li><strong>Stripe:</strong> Payment processing for Android purchases (card details, transaction information)</li>
               <li><strong>OneSignal:</strong> Push notifications</li>
             </ul>
             <p className="text-muted-foreground">
@@ -116,6 +117,7 @@ const Privacy = () => {
               <li>To comply with legal obligations or enforceable governmental requests</li>
               <li>To protect against harm to our rights, property, or safety, or that of our users</li>
               <li>In connection with a business transfer (merger, acquisition, or sale of assets)</li>
+              <li>Through in-app leaderboards, where your display name and scores are visible to other users</li>
             </ul>
           </section>
 

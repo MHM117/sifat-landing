@@ -19,7 +19,7 @@ const Terms = () => {
 
         <div className="prose prose-gray max-w-none">
           <p className="text-muted-foreground mb-6">
-            Last updated: June 2026
+            Last updated: September 2026
           </p>
 
           <section className="mb-8">
@@ -39,10 +39,25 @@ const Terms = () => {
           <section className="mb-8">
             <h2 className="text-xl font-semibold text-foreground mb-4">Purchases</h2>
             <p className="text-muted-foreground mb-4">
-              Sifat offers a free tier with limited access. Full access to all features requires a one-time purchase through the App Store.
+              Sifat offers a free tier with limited access. Full access to all features requires a premium purchase.
             </p>
+
+            <h3 className="text-lg font-medium text-foreground mb-2">iOS (App Store)</h3>
+            <p className="text-muted-foreground mb-4">
+              Purchases on iOS are processed through the Apple App Store. All purchases are final and subject to Apple's refund policy. To request a refund, visit{" "}
+              <a href="https://reportaproblem.apple.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">reportaproblem.apple.com</a>.
+            </p>
+
+            <h3 className="text-lg font-medium text-foreground mb-2">Android (Google Play)</h3>
+            <p className="text-muted-foreground mb-4">
+              Purchases on Android are processed via Stripe. All purchases are final. If you experience any issues with your purchase, please contact us at{" "}
+              <a href="mailto:support@sifat.app" className="text-primary hover:underline">support@sifat.app</a>{" "}
+              and we will do our best to resolve them.
+            </p>
+
             <p className="text-muted-foreground">
-              All purchases are final and handled by the platform provider. Refund requests are subject to the App Store's refund policy.
+              For details on how your payment data is handled, see our{" "}
+              <Link to="/privacy" className="text-primary hover:underline">Privacy Policy</Link>.
             </p>
           </section>
 
@@ -110,6 +125,18 @@ const Terms = () => {
               <li>This agreement is between you and Hussain Memon, not Apple</li>
               <li>Apple and its subsidiaries are third-party beneficiaries of this agreement and may enforce it against you</li>
               <li>In the event of warranty failure, you may notify Apple for a refund of the purchase price</li>
+            </ul>
+          </section>
+
+          <section className="mb-8">
+            <h2 className="text-xl font-semibold text-foreground mb-4">Platform-Specific Terms (Google Play)</h2>
+            <p className="text-muted-foreground mb-4">
+              For users who download the Licensed Application from Google Play, you acknowledge that:
+            </p>
+            <ul className="list-disc pl-6 text-muted-foreground space-y-2">
+              <li>This agreement is between you and Hussain Memon, not Google</li>
+              <li>Google has no obligation to provide maintenance, support, or warranty services for the Licensed Application</li>
+              <li>Payments are processed by Stripe on our behalf; Google does not handle payment processing for this app</li>
             </ul>
           </section>
 

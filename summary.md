@@ -1,28 +1,23 @@
 # Session Summary
 
-## Current state (2026-09-09)
-- **Android is live.** Replaced the Android waitlist button with the real Google Play badge linking to `https://play.google.com/store/apps/details?id=app.sifat.android` in both Hero.tsx and Download.tsx. Waitlist code (AndroidWaitlistButton, WaitlistDialog) kept intact — imports commented out, JSX commented out — ready to reactivate if needed.
-- **StoreBadges.tsx** also updated: both App Store and Google Play `href="#"` placeholders replaced with real store links.
-- **Social proof line added to Hero.** "Trusted by Hundreds of Muslims worldwide" sits between the subtitle and the store badges. Styled as `text-lg sm:text-xl`, semibold, with "Hundreds of Muslims" in brand blue (`text-primary`). Alignment matches the hero's responsive pattern (`text-center lg:text-left`).
-- **Uncommitted:** All of the above, plus prior uncommitted work from earlier sessions (Hero carousel dark mode toggle, 10 mockup images, search rework).
+## Current state (2026-09-12)
 
-## Decisions made this session
-- **"Hundreds" over "500+".** Discussed inflating the user count (200-300 actual) to 500+ but agreed "hundreds" is honest, sounds substantial, and ages well.
-- **Copy choice:** "Trusted by Hundreds of Muslims worldwide" — capitalised H on Hundreds for intentional emphasis.
-- **Styling (G4):** Brainstormed six initial options (A-F), then four E+F combos (G1-G4). Picked G4 — bold weight + blue highlight, no decorative rules — because rules would introduce a visual language foreign to the rest of the hero.
+- **Reviews strip added.** New `Reviews.tsx` between Hero and Hadith — compact strip (py-12, border-t, no heading) with 3 real App Store reviews (Noor A., Anonymous, Mohammad B.). Each card has stars, bold title, quote text, and author. Cards support an optional `title` field for future reviews. Carousel upgrade planned when more reviews accumulate.
+- **Section backgrounds fixed.** Alternating white/grey pattern from Hadith downward: Hadith (grey) → HowItWorks (white) → StepsToValue (grey) → Features (white) → Pricing (grey) → FairPricing (grey, pulled tight against Pricing) → FAQ (white) → SpecialThanks (white, pulled tight against FAQ) → Download (blue) → Footer (card).
+- **Blue pill eyebrows trimmed.** Removed from StepsToValue, Pricing, and FAQ. Kept on Features, FairPricing ("Our Approach"), and SpecialThanks only — reduces the AI-template look.
+- **Privacy Policy updated (September 2026).** Added leaderboard scores/streaks to Usage Data; changed purchase language to reflect freemium model; added leaderboard visibility bullet to Section 5; added Stripe to third-party services.
+- **Terms of Service updated (September 2026).** Purchases section now distinguishes iOS (App Store, Apple refund policy) from Android (Stripe, all purchases final, contact support for issues). Added Google Play platform-specific terms section. Added Privacy Policy link.
 
 ## Where things live
+- `src/components/landing/Reviews.tsx` — review cards strip between Hero and Hadith.
 - `src/components/landing/Hero.tsx` — carousel, dark mode toggle, social proof line, store badges.
 - `src/components/landing/Download.tsx` — bottom CTA section with store badges.
-- `src/components/landing/StoreBadges.tsx` — reusable badge pair (not currently used on any page but now has real links).
+- `src/pages/Privacy.tsx` — privacy policy.
+- `src/pages/Terms.tsx` — terms of service.
 - `src/components/landing/AndroidWaitlistButton.tsx` + `WaitlistDialog.tsx` — preserved, no longer imported.
 
-## Current session (2026-09-12)
-- **Reviews strip added.** New `Reviews.tsx` component sits between Hero and Hadith — compact strip (py-12, no heading) with 3 review cards showing star rating, quote, and author name. Placeholder content for now; user will supply real reviews.
-
 ## Open, next time
-- **Reviews: real content pending.** User will provide actual App Store review text to replace placeholders.
-- **Reviews: carousel upgrade.** When more reviews accumulate, convert the 3-card grid into a sliding carousel. Current static grid is fine for 3.
+- **Reviews: carousel upgrade.** When more reviews accumulate, convert the 3-card grid into a sliding carousel.
 - Toggle position needs fine-tuning on mobile viewports.
 - Image file sizes are large (~5.8 MB total for 10 mockups) — WebP conversion or lazy loading worth considering.
 - Column widths in `/names` table grid still untuned.
